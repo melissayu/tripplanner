@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.codepathms.cp.tripplannerapp.activities.Preferences2Activity">
+
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="Preferred method of transportation?" />
+
+    <Button
+        android:id="@+id/btnNext"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:text="Next" />
+
+    <Button
+        android:id="@+id/btnDrive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+        android:text="Drive" />
+
+    <Button
+        android:id="@+id/btnWalk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnDrive"
+        android:layout_alignBottom="@+id/btnDrive"
+        android:layout_marginEnd="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_toLeftOf="@+id/btnDrive"
+        android:layout_toStartOf="@+id/btnDrive"
+        android:text="Walk" />
+
+    <Button
+        android:id="@+id/btnPublic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnDrive"
+        android:layout_alignBottom="@+id/btnDrive"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@+id/btnDrive"
+        android:layout_toRightOf="@+id/btnDrive"
+        android:text="Public" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnDrive"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="42dp"
+        android:text="Preferred price range?" />
+
+    <Button
+        android:id="@+id/btnDollarOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/btnWalk"
+        android:layout_alignRight="@+id/btnWalk"
+        android:layout_below="@+id/textView4"
+        android:layout_marginTop="23dp"
+        android:text="$" />
+
+    <Button
+        android:id="@+id/btnDollarTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btnDollarOne"
+        android:layout_toEndOf="@+id/btnWalk"
+        android:layout_toRightOf="@+id/btnWalk"
+        android:text="$$" />
+
+    <Button
+        android:id="@+id/btnDollarThree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/btnPublic"
+        android:layout_alignRight="@+id/btnPublic"
+        android:layout_alignTop="@+id/btnDollarTwo"
+        android:text="$$$" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnDollarThree"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="53dp"
+        android:text="City" />
+
+    <EditText
+        android:id="@+id/etCity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView5"
+        android:layout_marginTop="32dp"
+        android:layout_toLeftOf="@+id/btnNext"
+        android:layout_toStartOf="@+id/btnNext"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Type:" />
+
+</RelativeLayout>

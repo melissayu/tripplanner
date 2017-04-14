@@ -10,9 +10,8 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:text="User Preferences" />
+        android:text="What are you interested in?"
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:id="@+id/btnNext"
@@ -22,4 +21,122 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:text="Next" />
+
+    <Button
+        android:id="@+id/btnFood"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView2"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="26dp"
+        android:text="Food" />
+
+    <Button
+        android:id="@+id/btnOutdoor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnFood"
+        android:layout_alignBottom="@+id/btnFood"
+        android:layout_marginEnd="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_toLeftOf="@+id/btnFood"
+        android:layout_toStartOf="@+id/btnFood"
+        android:text="Outdoor" />
+
+    <Button
+        android:id="@+id/btnTours"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnFood"
+        android:layout_alignBottom="@+id/btnFood"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@+id/btnFood"
+        android:layout_toRightOf="@+id/btnFood"
+        android:text="Tours" />
+
+    <Button
+        android:id="@+id/btnDrinks"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnOutdoor"
+        android:layout_alignStart="@+id/btnOutdoor"
+        android:layout_below="@+id/btnOutdoor"
+        android:layout_marginTop="16dp"
+        android:text="Drinks" />
+
+    <Button
+        android:id="@+id/btnSports"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnFood"
+        android:layout_alignStart="@+id/btnFood"
+        android:layout_alignTop="@+id/btnDrinks"
+        android:text="Sports" />
+
+    <Button
+        android:id="@+id/btnArts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnTours"
+        android:layout_alignStart="@+id/btnTours"
+        android:layout_alignTop="@+id/btnSports"
+        android:text="Arts" />
+
+    <Button
+        android:id="@+id/btnClubs"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnDrinks"
+        android:layout_alignStart="@+id/btnDrinks"
+        android:layout_below="@+id/btnDrinks"
+        android:layout_marginTop="17dp"
+        android:text="Clubs" />
+
+    <Button
+        android:id="@+id/btnMusic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/btnClubs"
+        android:layout_alignRight="@+id/btnClubs"
+        android:layout_below="@+id/btnClubs"
+        android:layout_marginTop="19dp"
+        android:text="Music" />
+
+    <Button
+        android:id="@+id/btnShops"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnSports"
+        android:layout_alignStart="@+id/btnSports"
+        android:layout_alignTop="@+id/btnClubs"
+        android:text="Shops" />
+
+    <Button
+        android:id="@+id/btnHike"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/btnArts"
+        android:layout_alignRight="@+id/btnArts"
+        android:layout_alignTop="@+id/btnShops"
+        android:text="Hike" />
+
+    <Button
+        android:id="@+id/btnMovies"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnShops"
+        android:layout_alignStart="@+id/btnShops"
+        android:layout_alignTop="@+id/btnMusic"
+        android:text="Movies" />
+
+    <Button
+        android:id="@+id/btnMuseum"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/btnHike"
+        android:layout_alignStart="@+id/btnHike"
+        android:layout_alignTop="@+id/btnMovies"
+        android:text="Museum" />
+
 </RelativeLayout>
