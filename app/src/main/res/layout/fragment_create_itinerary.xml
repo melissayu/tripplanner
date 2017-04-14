@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <TextView
-        android:id="@+id/textView3"
+        android:id="@+id/tvCreateItineraryLabel"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -20,6 +20,7 @@
         android:id="@+id/etCreateItineraryTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/tvCreateItineraryLabel"
         android:ems="10"
         android:hint="Title" />
 
@@ -27,17 +28,34 @@
         android:id="@+id/etCreateItineraryDescription"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@id/etCreateItineraryTitle"
         android:ems="10"
         android:hint="Description"/>
+
+    <TextView
+        android:id="@+id/tvTypeLabel"
+        android:layout_below="@id/etCreateItineraryDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Type" />
+
+    <Spinner
+        android:id="@+id/spinnerType"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/etCreateItineraryDescription"
+        android:layout_toRightOf="@+id/tvTypeLabel"
+        android:layout_toEndOf="@+id/tvTypeLabel"
+        />
 
     <Button
         android:id="@+id/btnCreateItinerarySave"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        android:text="Save and add Stops > "
+        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_alignParentTop="true"
-        android:text="Save and add Stops > " />
+        android:layout_alignParentEnd="true" />
 
 
-</LinearLayout>
+</RelativeLayout>

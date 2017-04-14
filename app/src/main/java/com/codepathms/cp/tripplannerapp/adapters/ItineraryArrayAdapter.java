@@ -48,7 +48,7 @@ public class ItineraryArrayAdapter extends ArrayAdapter<Itinerary> {
                     .into(ivItineraryItemPhoto);
         } else {
             Glide.with(context)
-                    .load(itinerary.getImageUrl()) //just a default image
+                    .load(itinerary.getImageUrl())
                     .centerCrop()
                     .into(ivItineraryItemPhoto);
         }
