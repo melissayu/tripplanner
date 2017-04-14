@@ -7,8 +7,10 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.codepathms.cp.tripplannerapp.R;
+import com.codepathms.cp.tripplannerapp.adapters.StopArrayAdapter;
 import com.codepathms.cp.tripplannerapp.models.Itinerary;
 import com.codepathms.cp.tripplannerapp.models.Stop;
 import com.google.android.gms.common.api.Status;
@@ -18,6 +20,8 @@ import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragmen
 
 import org.parceler.Parcels;
 
+import java.util.ArrayList;
+
 import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
 
 /**
@@ -25,6 +29,10 @@ import static com.bumptech.glide.gifdecoder.GifHeaderParser.TAG;
  */
 
 public class ItineraryCreateTimelineFragment extends Fragment{
+
+    ListView lvCreatedStops;
+    ArrayList<Stop> stopsList;
+    private StopArrayAdapter stopsAdapter;
 
     int sequence;
 
@@ -41,6 +49,12 @@ public class ItineraryCreateTimelineFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_create_timeline, container, false);
 
+        lvCreatedStops = (ListView) v.findViewById(R.id.lvCreateStops);
+
+        stopsList = new ArrayList<Stop>();
+        stopsAdapter = new StopArrayAdapter(getActivity(), stopsList);
+        lvCreatedStops.setAdapter(stopsAdapter);
+
         sequence = 0;
         return v;
 
@@ -51,7 +65,7 @@ public class ItineraryCreateTimelineFragment extends Fragment{
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        SupportPlaceAutocompleteFragment autocompleteFragment = (SupportPlaceAutocompleteFragment)
+        final SupportPlaceAutocompleteFragment autocompleteFragment = (SupportPlaceAutocompleteFragment)
                 getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
@@ -65,6 +79,9 @@ public class ItineraryCreateTimelineFragment extends Fragment{
                 int priceLevel = place.getPriceLevel();
 
                 Stop newStop = createNewStop(placeId, name, address);
+                stopsList.add(newStop);
+                stopsAdapter.notifyDataSetChanged();
+
             }
 
             @Override

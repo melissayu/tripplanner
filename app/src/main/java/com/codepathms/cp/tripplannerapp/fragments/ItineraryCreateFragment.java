@@ -7,8 +7,10 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import com.codepathms.cp.tripplannerapp.R;
 import com.codepathms.cp.tripplannerapp.models.Itinerary;
@@ -19,6 +21,9 @@ import com.codepathms.cp.tripplannerapp.models.Itinerary;
 
 public class ItineraryCreateFragment extends Fragment {
     OnItineraryCreatedListener mCallback;
+    EditText etCreateItineraryTitle;
+    EditText etCreateItineraryDescription;
+    Spinner spinner;
 
     // Container Activity must implement this interface
     public interface OnItineraryCreatedListener {
@@ -50,8 +55,8 @@ public class ItineraryCreateFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_create_itinerary, container, false);
 
-        final EditText etCreateItineraryTitle = (EditText) v.findViewById(R.id.etCreateItineraryTitle);
-        final EditText etCreateItineraryDescription = (EditText) v.findViewById(R.id.etCreateItineraryDescription);
+        etCreateItineraryTitle = (EditText) v.findViewById(R.id.etCreateItineraryTitle);
+        etCreateItineraryDescription = (EditText) v.findViewById(R.id.etCreateItineraryDescription);
 
         Button btnCreateSave = (Button) v.findViewById(R.id.btnCreateItinerarySave);
         btnCreateSave.setOnClickListener(new View.OnClickListener() {
@@ -62,6 +67,12 @@ public class ItineraryCreateFragment extends Fragment {
             }
         });
 
+        spinner = (Spinner) v.findViewById(R.id.spinnerType);
+        ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(getContext(),
+                R.array.itinerary_types_array, android.R.layout.simple_spinner_item);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+
         return v;
 
     }
@@ -70,8 +81,9 @@ public class ItineraryCreateFragment extends Fragment {
         //TODO: Create new Itinerary object, Save Itinerary to Parse DB here
 
         Itinerary it = new Itinerary();
-        it.setTitle(title);
-        it.setDescription(description);
+        it.setTitle(etCreateItineraryTitle.getText().toString());
+        it.setDescription(etCreateItineraryDescription.getText().toString());
+        it.setTags(spinner.getSelectedItem().toString());
         it.save();
         return it;
 

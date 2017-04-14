@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="itinerary_types_array">
+        <item>Restaurant</item>
+        <item>Outdoor</item>
+        <item>Landmark</item>
+        <item>Bar</item>
+        <item>Museum</item>
+    </string-array>
+</resources>
