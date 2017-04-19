@@ -42,13 +42,13 @@ public class StopArrayAdapter extends ArrayAdapter<Stop> {
         TextView tvStopTitle = (TextView) convertView.findViewById(R.id.tvStopTitle);
         tvStopTitle.setText(stop.getTitle());
         TextView tvStopAddress = (TextView) convertView.findViewById(R.id.tvStopAddress);
-        tvStopAddress.setText(stop.getLocation());
+        tvStopAddress.setText(stop.getAddress());
 
         TextView tvNav = (TextView) convertView.findViewById(R.id.tvNavTitle);
         tvNav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                openNav(stop.getLocation());
+                openNav(stop.getAddress());
             }
         });
 

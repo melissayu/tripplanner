@@ -5,19 +5,25 @@ import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import com.astuetz.PagerSlidingTabStrip;
 import com.codepathms.cp.tripplannerapp.R;
+import com.codepathms.cp.tripplannerapp.fragments.CreatedItineraryListFragment;
 import com.codepathms.cp.tripplannerapp.fragments.ItineraryListFragment;
-import com.codepathms.cp.tripplannerapp.models.Itinerary;
-
-import org.parceler.Parcels;
+import com.codepathms.cp.tripplannerapp.fragments.SavedItineraryListFragment;
 
 public class MainActivity extends AppCompatActivity {
     private ItineraryListFragment itineraryListFragment;
+    private SavedItineraryListFragment savedItineraryListFragment;
+    private CreatedItineraryListFragment createdItineraryListFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +41,7 @@ public class MainActivity extends AppCompatActivity {
     //return order of the fragments in the viewpager
     public class ItinerariesPagerAdapter extends FragmentPagerAdapter {
         final int PAGE_COUNT = 3;
-        final String[] tabTitles = {"Explore", "Saved", "Visited"};
+        final String[] tabTitles = {"Explore", "Saved", "My Plans"};
         public ItinerariesPagerAdapter(FragmentManager fm) {
             super(fm);
         }
@@ -45,10 +51,10 @@ public class MainActivity extends AppCompatActivity {
             if ( position==0 ) {
                 return new ItineraryListFragment();
             } else if (position == 1) {
-                return new ItineraryListFragment();
+                return new SavedItineraryListFragment();
                 //TODO: RETURN SAVED LIST
             } else if (position == 2) {
-               return new ItineraryListFragment();
+               return new CreatedItineraryListFragment();
                 //TODO: RETURN VISITED LIST
             } else {
                 return null;
@@ -64,7 +70,10 @@ public class MainActivity extends AppCompatActivity {
                     itineraryListFragment = (ItineraryListFragment) createdFragment;
                     break;
                 case 1:
-//                    mentionsTimelineFragment = (MentionsTimelineFragment) createdFragment;
+                    savedItineraryListFragment = (SavedItineraryListFragment) createdFragment;
+                    break;
+                case 2:
+                    createdItineraryListFragment = (CreatedItineraryListFragment) createdFragment;
                     break;
             }
             return createdFragment;
@@ -86,12 +95,41 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
 
-            Itinerary newItinerary = (Itinerary) Parcels.unwrap(data.getExtras().getParcelable("NEW_ITINERARY"));
+            String newItineraryId = (String) data.getStringExtra("NEW_ITINERARY_ID");
             if (itineraryListFragment != null) {
-                itineraryListFragment.newItineraryCreated(newItinerary);
+                itineraryListFragment.newItineraryCreated(newItineraryId);
             }
 
         }
 
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        MenuItem searchItem = menu.findItem(R.id.action_search);
+        final SearchView searchView = (SearchView) MenuItemCompat.getActionView(searchItem);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // perform query here
+                if (itineraryListFragment != null) {
+                    itineraryListFragment.getItineraries(query);
+                }
+
+                // workaround to avoid issues with some emulators and keyboard devices firing twice if a keyboard enter is used
+                // see https://code.google.com/p/android/issues/detail?id=24599
+                searchView.clearFocus();
+
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 }

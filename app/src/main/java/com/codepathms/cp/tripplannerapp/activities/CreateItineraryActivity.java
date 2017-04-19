@@ -7,9 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.codepathms.cp.tripplannerapp.R;
 import com.codepathms.cp.tripplannerapp.fragments.ItineraryCreateFragment;
-import com.codepathms.cp.tripplannerapp.models.Itinerary;
-
-import org.parceler.Parcels;
 
 public class CreateItineraryActivity extends AppCompatActivity implements ItineraryCreateFragment.OnItineraryCreatedListener{
 
@@ -28,9 +25,9 @@ public class CreateItineraryActivity extends AppCompatActivity implements Itiner
     }
 
     @Override
-    public void onItinerarySave(Itinerary newItinerary) {
+    public void onItinerarySave(String newItineraryId) {
         Intent intent = new Intent();
-        intent.putExtra("NEW_ITINERARY", Parcels.wrap(newItinerary));
+        intent.putExtra("NEW_ITINERARY_ID", newItineraryId);
         setResult(RESULT_OK, intent);
         finish();
 

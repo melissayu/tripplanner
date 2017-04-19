@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,9 +18,10 @@ import com.codepathms.cp.tripplannerapp.activities.CreateItineraryDetailActivity
 import com.codepathms.cp.tripplannerapp.activities.ItineraryDetailActivity;
 import com.codepathms.cp.tripplannerapp.adapters.ItineraryArrayAdapter;
 import com.codepathms.cp.tripplannerapp.models.Itinerary;
-import com.raizlabs.android.dbflow.sql.language.SQLite;
-
-import org.parceler.Parcels;
+import com.parse.FindCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +34,7 @@ public class ItineraryListFragment extends Fragment {
     private final int REQUEST_CODE = 20;
 
     List<Itinerary> itineraryList;
-    private ItineraryArrayAdapter itineraryAdapter;
+    public ItineraryArrayAdapter itineraryAdapter;
     public ListView lvItineraries;
 
     @Nullable
@@ -49,7 +51,7 @@ public class ItineraryListFragment extends Fragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Itinerary selectedItinerary = itineraryList.get(position);
                 Intent i = new Intent(getActivity().getApplicationContext(), ItineraryDetailActivity.class);
-                i.putExtra("itinerary", Parcels.wrap(selectedItinerary));
+                i.putExtra("itineraryId", selectedItinerary.getObjectId());
                 startActivityForResult(i, REQUEST_CODE);
 
             }
@@ -81,45 +83,75 @@ public class ItineraryListFragment extends Fragment {
         itineraryList = new ArrayList<>();
         itineraryAdapter = new ItineraryArrayAdapter(getActivity(), itineraryList);
 
-        itineraryList.addAll(getItineraries());
-
+        getItineraries();
+//        itineraryList.addAll(getItineraries());
+//        itineraryAdapter.notifyDataSetChanged();
     }
 
-    public void newItineraryCreated(Itinerary newItinerary) {
-        itineraryList.add(newItinerary);
-        itineraryAdapter.notifyDataSetChanged();
+    public void newItineraryCreated(String newItineraryId) {
+//        itineraryList.add(newItinerary);
+//        itineraryAdapter.notifyDataSetChanged();
 
         //Itinerary record was created, now go to CreateDetail to add Stops
         Intent i = new Intent(getActivity().getApplicationContext(), CreateItineraryDetailActivity.class);
-        i.putExtra("New_Itinerary", Parcels.wrap(newItinerary));
+        i.putExtra("New_Itinerary", newItineraryId);
         startActivityForResult(i,10);
 
     }
 
     public ArrayList<Itinerary> getItineraries() {
-        // TODO: Get Itineraries from Parse DB and return
-
-        List<Itinerary> itineraryList = SQLite.select().from(Itinerary.class).queryList();
-
-        /* creating some mock data if DB is empty*/
-        if (itineraryList.size() == 0) {
-            ArrayList<Itinerary> mockItineraries = new ArrayList<Itinerary>();
-            Itinerary it1 = new Itinerary();
-            it1.setTitle("Dinner and Dessert");
-            it1.setDescription("A nice evening in Los Gatos");
-            it1.setImageUrl("http://i.imgur.com/nLB5Nce.jpg");
-            it1.save();
-
-            Itinerary it2 = new Itinerary();
-            it2.setTitle("Biking and Picnic at the beach");
-            it2.setDescription("Great for active families");
-            it2.save();
-
-            mockItineraries.add(it1);
-            mockItineraries.add(it2);
-            return mockItineraries;
-        }
+        ParseQuery<Itinerary> query = ParseQuery.getQuery("Itinerary");
+        query.findInBackground(new FindCallback<Itinerary>() {
+            public void done(List<Itinerary> itineraries, ParseException e) {
+                if (e == null) {
+                    itineraryList.addAll(itineraries);
+                    /* creating some mock data if DB is empty*/
+                    if (itineraryList.size() == 0) {
+//                        itineraryList.addAll(createMockDataItineraries());
+                    }
+                    itineraryAdapter.notifyDataSetChanged();
+                } else {
+                    Log.d("score", "Error: " + e.getMessage());
+                }
+            }
+        });
 
         return (ArrayList<Itinerary>)itineraryList;
+    }
+
+    public ArrayList<Itinerary> getItineraries(String queryString) {
+        ParseQuery<Itinerary> query = ParseQuery.getQuery("Itinerary");
+        query.whereContains("title", queryString);
+        query.findInBackground(new FindCallback<Itinerary>() {
+            public void done(List<Itinerary> itineraries, ParseException e) {
+                if (e == null) {
+                    itineraryAdapter.clear();
+                    itineraryList.addAll(itineraries);
+                    itineraryAdapter.notifyDataSetChanged();
+                } else {
+                    Log.d("score", "Error: " + e.getMessage());
+                }
+            }
+        });
+
+        return (ArrayList<Itinerary>)itineraryList;
+    }
+
+    public ArrayList<Itinerary> createMockDataItineraries(){
+        ArrayList<Itinerary> mockItineraries = new ArrayList<Itinerary>();
+
+        Itinerary it1 = new Itinerary("Dinner and Dessert2");
+        it1.setDescription("A nice evening in Los Gatos");
+        it1.setOwner(ParseUser.getCurrentUser());
+        it1.saveInBackground();
+        Itinerary it2 = new Itinerary("Biking and Picnic at the beach2");
+        it2.setDescription("Great for active families");
+        it2.setOwner(ParseUser.getCurrentUser());
+        it2.saveInBackground();
+
+        mockItineraries.add(it1);
+        mockItineraries.add(it2);
+        return mockItineraries;
+
     }
 }

@@ -14,6 +14,9 @@ import android.widget.Spinner;
 
 import com.codepathms.cp.tripplannerapp.R;
 import com.codepathms.cp.tripplannerapp.models.Itinerary;
+import com.parse.ParseException;
+import com.parse.ParseUser;
+import com.parse.SaveCallback;
 
 /**
  * Created by melissa on 4/12/17.
@@ -27,7 +30,7 @@ public class ItineraryCreateFragment extends Fragment {
 
     // Container Activity must implement this interface
     public interface OnItineraryCreatedListener {
-        public void onItinerarySave(Itinerary newItinerary);
+        public void onItinerarySave(String newItineraryId);
     }
 
     @Override
@@ -62,8 +65,7 @@ public class ItineraryCreateFragment extends Fragment {
         btnCreateSave.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Itinerary itinerary = saveItinerary(etCreateItineraryTitle.getText().toString(), etCreateItineraryDescription.getText().toString());
-                mCallback.onItinerarySave(itinerary);
+                saveItinerary(etCreateItineraryTitle.getText().toString(), etCreateItineraryDescription.getText().toString());
             }
         });
 
@@ -77,15 +79,33 @@ public class ItineraryCreateFragment extends Fragment {
 
     }
 
-    public Itinerary saveItinerary(String title, String description) {
+    public void saveItinerary(String title, String description) {
         //TODO: Create new Itinerary object, Save Itinerary to Parse DB here
 
-        Itinerary it = new Itinerary();
-        it.setTitle(etCreateItineraryTitle.getText().toString());
+        final Itinerary it = new Itinerary(etCreateItineraryTitle.getText().toString());
         it.setDescription(etCreateItineraryDescription.getText().toString());
-        it.setTags(spinner.getSelectedItem().toString());
-        it.save();
-        return it;
+        it.setOwner(ParseUser.getCurrentUser());
+        it.saveInBackground();
+        it.saveInBackground(new SaveCallback() {
+            public void done(ParseException e) {
+                if (e == null) {
+                    // Success!
+//                    objectId = it.getObjectId();
+                    mCallback.onItinerarySave(it.getObjectId());
+
+
+                } else {
+                    // Failure!
+                }
+            }
+        });
+
+//        Itinerary it = new Itinerary();
+//        it.setTitle(etCreateItineraryTitle.getText().toString());
+//        it.setDescription(etCreateItineraryDescription.getText().toString());
+//        it.setTags(spinner.getSelectedItem().toString());
+//        it.save();
+//        return objectId;
 
     }
 

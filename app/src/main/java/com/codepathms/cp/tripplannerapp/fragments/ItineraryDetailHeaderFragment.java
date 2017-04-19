@@ -12,8 +12,15 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.codepathms.cp.tripplannerapp.R;
 import com.codepathms.cp.tripplannerapp.models.Itinerary;
+import com.parse.FindCallback;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseObject;
+import com.parse.ParseQuery;
+import com.parse.ParseRelation;
+import com.parse.ParseUser;
 
-import org.parceler.Parcels;
+import java.util.List;
 
 /**
  * Created by melissa on 4/4/17.
@@ -21,10 +28,15 @@ import org.parceler.Parcels;
 
 public class ItineraryDetailHeaderFragment extends Fragment {
 
-    public static ItineraryDetailHeaderFragment newInstance(Itinerary itinerary) {
+    public Itinerary curItinerary;
+    public boolean isBookmarked;
+    ImageView ivItineraryDetailBookmark;
+    ParseUser curUser;
+
+    public static ItineraryDetailHeaderFragment newInstance(String itineraryId) {
         ItineraryDetailHeaderFragment itineraryDetailHeaderFragment = new ItineraryDetailHeaderFragment();
         Bundle args = new Bundle();
-        args.putParcelable("itinerary", Parcels.wrap(itinerary));
+        args.putString("itineraryId", itineraryId);
         itineraryDetailHeaderFragment.setArguments(args);
         return itineraryDetailHeaderFragment;
     }
@@ -35,29 +47,103 @@ public class ItineraryDetailHeaderFragment extends Fragment {
 //        return super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_itinerary_detail_header, container, false);
 
-        TextView tvItineraryDetailTitle = (TextView) v.findViewById(R.id.tvItineraryDetailTitle);
-        TextView tvItineraryDetailDescription = (TextView) v.findViewById(R.id.tvItineraryDetailDescription);
-        TextView tvItineraryDetailFeatures = (TextView) v.findViewById(R.id.tvItineraryDetailFeatures);
+        isBookmarked = false;
 
-        Itinerary i = (Itinerary) Parcels.unwrap(getArguments().getParcelable("itinerary"));
-        tvItineraryDetailTitle.setText(i.getTitle());
-        tvItineraryDetailDescription.setText(i.getDescription());
-        tvItineraryDetailFeatures.setText(i.getTags());
+        final TextView tvItineraryDetailTitle = (TextView) v.findViewById(R.id.tvItineraryDetailTitle);
+        final TextView tvItineraryDetailDescription = (TextView) v.findViewById(R.id.tvItineraryDetailDescription);
+        final TextView tvItineraryDetailFeatures = (TextView) v.findViewById(R.id.tvItineraryDetailFeatures);
+        final ImageView ivItineraryDetailPhoto = (ImageView) v.findViewById(R.id.ivItineraryDetailPhoto);
+        ivItineraryDetailBookmark = (ImageView) v.findViewById(R.id.ivItineraryDetailBookmark);
 
-        ImageView ivItineraryDetailPhoto = (ImageView) v.findViewById(R.id.ivItineraryDetailPhoto);
-        if (i.getImageUrl() == null) {
-            Glide.with(getContext())
-                    .load("http://i.imgur.com/XWi7KBJ.jpg") //just a default image
-                    .centerCrop()
-                    .into(ivItineraryDetailPhoto);
-        } else {
-            Glide.with(getContext())
-                    .load(i.getImageUrl())
-                    .centerCrop()
-                    .into(ivItineraryDetailPhoto);
-        }
+//        Itinerary i = (Itinerary) Parcels.unwrap(getArguments().getParcelable("itinerary"));
+        String itineraryId = (String) getArguments().getString("itineraryId");
+
+        ParseQuery<Itinerary> query = ParseQuery.getQuery(Itinerary.class);
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK); // or CACHE_ONLY
+        query.getInBackground(itineraryId, new GetCallback<Itinerary>() {
+            public void done(Itinerary itinerary, ParseException e) {
+                if (e == null) {
+                    // item was found
+                    curItinerary = itinerary;
+                    tvItineraryDetailTitle.setText(itinerary.getTitle());
+                    tvItineraryDetailDescription.setText(itinerary.getDescription());
+                    //tvItineraryDetailFeatures.setText(i.getTags());
+
+                    if (itinerary.getImageUrl() == null) {
+                        Glide.with(getContext())
+                                .load("http://i.imgur.com/XWi7KBJ.jpg") //just a default image
+                                .centerCrop()
+                                .into(ivItineraryDetailPhoto);
+                    } else {
+                        Glide.with(getContext())
+                                .load(itinerary.getImageUrl())
+                                .centerCrop()
+                                .into(ivItineraryDetailPhoto);
+                    }
+                }
+                curUser = ParseUser.getCurrentUser();
+                ParseRelation<ParseObject> relation = curUser.getRelation("bookmarkedItineraries");
+                ParseQuery<ParseObject> relquery = relation.getQuery();
+//                relquery.whereKey(curItinerary.getObjectId());
+                relquery.findInBackground(new FindCallback<ParseObject>() {
+                    public void done(List<ParseObject> results, ParseException e) {
+                        if (e != null) {
+                            // There was an error
+                        } else {
+                            // results have all the Posts the current user liked.
+                            for (int i = 0; i< results.size(); i++) {
+                                if ((results.get(i).getObjectId()).equals(curItinerary.getObjectId())) {
+                                    isBookmarked = true;
+                                    Glide.with(getContext())
+                                            .load(R.drawable.ic_bookmark)
+                                            .placeholder(R.drawable.ic_bookmark)
+                                            .centerCrop()
+                                            .into(ivItineraryDetailBookmark);
+                                    break;
+                                }
+
+                            }
+                        }
+                    }
+                });
+                ivItineraryDetailBookmark.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        toggleBookmark();
+                    }
+                });
+
+
+            }
+        });
+
 
         return v;
 
+    }
+
+    public void toggleBookmark(){
+        ParseRelation<ParseObject> relation = curUser.getRelation("bookmarkedItineraries");
+        if (isBookmarked) {
+            //Remove bookmark
+            relation.remove(curItinerary);
+            curUser.saveInBackground();
+            Glide.with(getContext())
+                    .load(R.drawable.ic_bookmark_border)
+                    .placeholder(R.drawable.ic_bookmark_border)
+                    .centerCrop()
+                    .into(ivItineraryDetailBookmark);
+            isBookmarked = false;
+        } else {
+            //Add bookmark
+            relation.add(curItinerary);
+            curUser.saveInBackground();
+            Glide.with(getContext())
+                    .load(R.drawable.ic_bookmark)
+                    .placeholder(R.drawable.ic_bookmark)
+                    .centerCrop()
+                    .into(ivItineraryDetailBookmark);
+            isBookmarked = true;
+        }
     }
 }

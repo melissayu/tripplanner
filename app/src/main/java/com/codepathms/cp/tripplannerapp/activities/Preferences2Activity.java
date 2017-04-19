@@ -8,27 +8,13 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.codepathms.cp.tripplannerapp.R;
-import com.codepathms.cp.tripplannerapp.models.UserParse;
-import com.parse.LogInCallback;
-import com.parse.ParseAnonymousUtils;
-import com.parse.ParseException;
-import com.parse.ParseObject;
 import com.parse.ParseUser;
-import com.parse.SaveCallback;
 
 import java.util.ArrayList;
-import java.util.List;
 
-import static android.R.id.message;
-import static com.codepathms.cp.tripplannerapp.R.id.btnClubs;
-import static com.codepathms.cp.tripplannerapp.R.id.btnDrinks;
-import static com.codepathms.cp.tripplannerapp.R.id.btnMovies;
-import static com.codepathms.cp.tripplannerapp.R.id.btnMuseum;
-import static com.codepathms.cp.tripplannerapp.R.id.btnMusic;
-import static com.codepathms.cp.tripplannerapp.R.id.btnNext;
+//import com.codepathms.cp.tripplannerapp.models.ParseUser;
 
 public class Preferences2Activity extends AppCompatActivity {
     static final String TAG = Preferences2Activity.class.getSimpleName();
@@ -62,13 +48,14 @@ public class Preferences2Activity extends AppCompatActivity {
 
     private ArrayList<String> preferences = new ArrayList<>();
 
+    private ParseUser currentUser;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences2);
 
-        // User login
-        login();
+        currentUser = ParseUser.getCurrentUser();
 
         preferences = (ArrayList<String>) getIntent().getSerializableExtra("preferences");
         Log.e("ABC", preferences.toString());
@@ -95,24 +82,8 @@ public class Preferences2Activity extends AppCompatActivity {
                     preferences.add("City:" + etCity.getText().toString());
                 }
 
-                UserParse message = new UserParse();
-                message.setUsername("bbb");
-                message.setUserPreferences(preferences);
-                message.saveInBackground(new SaveCallback() {
-                    @Override
-                    public void done(ParseException e) {
-                        if(e == null) {
-                            Toast.makeText(Preferences2Activity.this, "Successfully created message on Parse",
-                                    Toast.LENGTH_SHORT).show();
-                        } else {
-                            Log.e(TAG, "Failed to save message", e);
-                        }
-                    }
-                });
+                Intent preferenceIntent = new Intent(getApplicationContext(), MainActivity.class);
 
-                Intent preferenceIntent = new Intent(getApplicationContext(), PreferencesActivity.class);
-
-                System.out.println("BBB");
                 preferenceIntent.putExtra("preferences", preferences);
 
                 startActivity(preferenceIntent);
@@ -282,24 +253,6 @@ public class Preferences2Activity extends AppCompatActivity {
             }
         });
 
-    }
-
-    // Get the userId from the cached currentUser object
-    void startWithCurrentUser() {
-    }
-
-    // Create an anonymous user using ParseAnonymousUtils and set sUserId
-    void login() {
-        ParseAnonymousUtils.logIn(new LogInCallback() {
-            @Override
-            public void done(ParseUser user, ParseException e) {
-                if (e != null) {
-                    Log.e(TAG, "Anonymous login failed: ", e);
-                } else {
-                    startWithCurrentUser();
-                }
-            }
-        });
     }
 
 }

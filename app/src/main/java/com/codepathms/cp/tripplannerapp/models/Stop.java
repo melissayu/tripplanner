@@ -1,10 +1,8 @@
 package com.codepathms.cp.tripplannerapp.models;
 
-import com.codepathms.cp.tripplannerapp.database.MyDatabase;
-import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.PrimaryKey;
-import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.structure.BaseModel;
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import org.parceler.Parcel;
 
@@ -25,9 +23,88 @@ import org.parceler.Parcel;
     ImageUrl
  */
 @Parcel(analyze={Stop.class})
-@Table(database = MyDatabase.class)
-public class Stop extends BaseModel{
+//@Table(database = MyDatabase.class)
+@ParseClassName("Stop")
+public class Stop extends ParseObject {
 
+    public Stop() {
+        super();
+    }
+
+    public Stop(String title) {
+        super();
+        setTitle(title);
+    }
+
+    public void setTitle(String title) {
+        put("title", title);
+    }
+
+    public String getTitle() {
+        return getString("title");
+    }
+
+    public void setDescription(String description) {
+        put("description", description);
+    }
+
+    public String getDescription() {
+        return getString("description");
+    }
+
+    public void setImageUrl(String imageUrl) {
+        put("imageUrl", imageUrl);
+    }
+
+    public String getImageUrl() {
+        return getString("imageUrl");
+    }
+
+    public void setPlaceId(String placeId) {
+        put("placeId", placeId);
+    }
+
+    public String getPlaceId() {
+        return getString("placeId");
+    }
+
+    public void setAddress(String address) {
+        put("address", address);
+    }
+
+    public String getAddress() {
+        return getString("address");
+    }
+
+    public void setItineraryId(String itineraryId) {
+        put("itineraryId", itineraryId);
+    }
+
+    public String getItineraryId() {
+        return getString("itineraryId");
+    }
+
+    public void setSequenceNumber(int sequence) {
+        put("sequence", sequence);
+    }
+
+    public int getSequenceNumber() {
+        return getInt("sequence");
+    }
+
+    // Get the user for this item
+    public ParseUser getUser()  {
+        return getParseUser("owner");
+    }
+
+    // Associate each item with a user
+    public void setOwner(ParseUser user) {
+        put("owner", user);
+    }
+
+
+
+    /*
     @Column
     @PrimaryKey (autoincrement=true)
     long id;
@@ -169,5 +246,5 @@ public class Stop extends BaseModel{
     public int getSequenceNumber() {
         return sequenceNumber;
     }
-
+    */
 }

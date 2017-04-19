@@ -1,15 +1,10 @@
 package com.codepathms.cp.tripplannerapp.models;
 
-import com.codepathms.cp.tripplannerapp.database.MyDatabase;
-import com.raizlabs.android.dbflow.annotation.Column;
-import com.raizlabs.android.dbflow.annotation.ColumnIgnore;
-import com.raizlabs.android.dbflow.annotation.PrimaryKey;
-import com.raizlabs.android.dbflow.annotation.Table;
-import com.raizlabs.android.dbflow.structure.BaseModel;
+import com.parse.ParseClassName;
+import com.parse.ParseObject;
+import com.parse.ParseUser;
 
 import org.parceler.Parcel;
-
-import java.util.ArrayList;
 
 /**
  * Created by melissa on 4/3/17.
@@ -30,46 +25,69 @@ import java.util.ArrayList;
 
  */
 @Parcel(analyze={Itinerary.class})
-@Table(database = MyDatabase.class)
-public class Itinerary extends BaseModel {
+//@Table(database = MyDatabase.class)
+@ParseClassName("Itinerary")
+public class Itinerary extends ParseObject {
 
-    @Column
-    @PrimaryKey (autoincrement=true)
+    /*
     long id;
-
-    @Column
     String title;
-
-    @Column
     String description;
-
-    @Column
     String tags;
-
-    @Column
     int rating; //1-5
-
-    @Column
     String location; //City name
-
-    @Column
     int timeDuration; //In hours
-
-    @Column
     float distance;  //In miles
-
-    @Column
     String imageUrl;
-
-    @ColumnIgnore
     ArrayList<Stop> stops;
+    */
 
-    public void setId(long id) {
-        this.id = id;
+    public Itinerary() {
+        super();
+    }
+
+    public Itinerary(String title) {
+        super();
+        setTitle(title);
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        put("title", title);
+    }
+
+    public String getTitle() {
+        return getString("title");
+    }
+
+    public void setDescription(String description) {
+        put("description", description);
+    }
+
+    public String getDescription() {
+        return getString("description");
+    }
+
+    public void setImageUrl(String imageUrl) {
+        put("imageUrl", imageUrl);
+    }
+
+    public String getImageUrl() {
+        return getString("imageUrl");
+    }
+
+    // Get the user for this item
+    public ParseUser getUser()  {
+        return getParseUser("owner");
+    }
+
+    // Associate each item with a user
+    public void setOwner(ParseUser user) {
+        put("owner", user);
+    }
+
+    /*
+    public void setId(long id) {
+        this.id = id;
     }
 
     public void setDescription(String description) {
@@ -143,5 +161,39 @@ public class Itinerary extends BaseModel {
     public ArrayList<Stop> getStops() {
         return stops;
     }
+*/
+
+        /*
+    @Column
+    @PrimaryKey (autoincrement=true)
+    long id;
+
+    @Column
+    String title;
+
+    @Column
+    String description;
+
+    @Column
+    String tags;
+
+    @Column
+    int rating; //1-5
+
+    @Column
+    String location; //City name
+
+    @Column
+    int timeDuration; //In hours
+
+    @Column
+    float distance;  //In miles
+
+    @Column
+    String imageUrl;
+
+    @ColumnIgnore
+    ArrayList<Stop> stops;
+*/
 
 }

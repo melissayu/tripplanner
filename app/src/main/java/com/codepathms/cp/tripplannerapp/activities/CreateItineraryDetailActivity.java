@@ -7,9 +7,6 @@ import android.support.v7.app.AppCompatActivity;
 import com.codepathms.cp.tripplannerapp.R;
 import com.codepathms.cp.tripplannerapp.fragments.ItineraryCreateHeaderFragment;
 import com.codepathms.cp.tripplannerapp.fragments.ItineraryCreateTimelineFragment;
-import com.codepathms.cp.tripplannerapp.models.Itinerary;
-
-import org.parceler.Parcels;
 
 public class CreateItineraryDetailActivity extends AppCompatActivity {
 
@@ -18,12 +15,13 @@ public class CreateItineraryDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_itinerary_detail);
 
-        Itinerary newItinerary = (Itinerary) Parcels.unwrap(getIntent().getExtras().getParcelable("New_Itinerary"));
+//        Itinerary newItinerary = (Itinerary) Parcels.unwrap(getIntent().getExtras().getParcelable("New_Itinerary"));
+        String newItineraryId = (String) getIntent().getStringExtra("New_Itinerary");
 
 
         if (savedInstanceState == null) {
-            ItineraryCreateHeaderFragment itineraryCreateHeaderFragment = ItineraryCreateHeaderFragment.newInstance(newItinerary);
-            ItineraryCreateTimelineFragment itineraryCreateTimelineFragment = ItineraryCreateTimelineFragment.newInstance(newItinerary);
+            ItineraryCreateHeaderFragment itineraryCreateHeaderFragment = ItineraryCreateHeaderFragment.newInstance(newItineraryId);
+            ItineraryCreateTimelineFragment itineraryCreateTimelineFragment = ItineraryCreateTimelineFragment.newInstance(newItineraryId);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.flCreateHeaderContainer, itineraryCreateHeaderFragment, "ITINERARY_CREATE_HEADER");
             ft.replace(R.id.flCreateTimelineContainer, itineraryCreateTimelineFragment, "ITINERARY_CREATE_TIMELINE");

@@ -11,14 +11,12 @@ import android.widget.ListView;
 
 import com.codepathms.cp.tripplannerapp.R;
 import com.codepathms.cp.tripplannerapp.adapters.StopArrayAdapter;
-import com.codepathms.cp.tripplannerapp.models.Itinerary;
 import com.codepathms.cp.tripplannerapp.models.Stop;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment;
-
-import org.parceler.Parcels;
+import com.parse.ParseUser;
 
 import java.util.ArrayList;
 
@@ -36,10 +34,10 @@ public class ItineraryCreateTimelineFragment extends Fragment{
 
     int sequence;
 
-    public static ItineraryCreateTimelineFragment newInstance(Itinerary itinerary) {
+    public static ItineraryCreateTimelineFragment newInstance(String itineraryId) {
         ItineraryCreateTimelineFragment itineraryCreateTimelineFragment = new ItineraryCreateTimelineFragment();
         Bundle args = new Bundle();
-        args.putParcelable("itinerary", Parcels.wrap(itinerary));
+        args.putString("itineraryId", itineraryId);
         itineraryCreateTimelineFragment.setArguments(args);
         return itineraryCreateTimelineFragment;
     }
@@ -95,15 +93,25 @@ public class ItineraryCreateTimelineFragment extends Fragment{
     }
 
     public Stop createNewStop(String placeId, String name, String location) {
-        Itinerary itinerary = (Itinerary) Parcels.unwrap(getArguments().getParcelable("itinerary"));
+//        Itinerary itinerary = (Itinerary) Parcels.unwrap(getArguments().getParcelable("itinerary"));
 
-        Stop newStop = new Stop();
-        newStop.setTitle(name);
-        newStop.setLocation(location);
+        String itineraryId = (String) getArguments().getString("itineraryId");
+
+        Stop newStop = new Stop(name);
+        newStop.setAddress(location);
+        newStop.setItineraryId(itineraryId);
         newStop.setPlaceId(placeId);
-        newStop.setItineraryId(itinerary.getId());
         newStop.setSequenceNumber(sequence);
-        newStop.save();
+        newStop.setOwner(ParseUser.getCurrentUser());
+        newStop.saveInBackground();
+
+//        Stop newStop = new Stop();
+//        newStop.setTitle(name);
+//        newStop.setLocation(location);
+//        newStop.setPlaceId(placeId);
+//        newStop.setItineraryId(123);
+//        newStop.setSequenceNumber(sequence);
+//        newStop.save();
         return newStop;
     }
 }

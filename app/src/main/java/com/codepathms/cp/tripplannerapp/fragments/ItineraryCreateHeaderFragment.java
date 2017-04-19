@@ -11,8 +11,9 @@ import android.widget.EditText;
 
 import com.codepathms.cp.tripplannerapp.R;
 import com.codepathms.cp.tripplannerapp.models.Itinerary;
-
-import org.parceler.Parcels;
+import com.parse.GetCallback;
+import com.parse.ParseException;
+import com.parse.ParseQuery;
 
 /**
  * Created by melissa on 4/5/17.
@@ -35,10 +36,10 @@ public class ItineraryCreateHeaderFragment extends Fragment{
 
     }
 */
-    public static ItineraryCreateHeaderFragment newInstance(Itinerary newItinerary) {
+    public static ItineraryCreateHeaderFragment newInstance(String newItineraryId) {
         ItineraryCreateHeaderFragment itineraryCreateHeaderFragment = new ItineraryCreateHeaderFragment();
         Bundle args = new Bundle();
-        args.putParcelable("itinerary", Parcels.wrap(newItinerary));
+        args.putString("itineraryId", newItineraryId);
         itineraryCreateHeaderFragment.setArguments(args);
         return itineraryCreateHeaderFragment;
     }
@@ -48,12 +49,23 @@ public class ItineraryCreateHeaderFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_create_header, container, false);
 
-        Itinerary itinerary = (Itinerary) Parcels.unwrap(getArguments().getParcelable("itinerary"));
+        final EditText etCreateDescription = (EditText) v.findViewById(R.id.etCreateDescription);
+        final EditText etCreateTitle = (EditText) v.findViewById(R.id.etCreateTitle);
 
-        EditText etCreateDescription = (EditText) v.findViewById(R.id.etCreateDescription);
-        etCreateDescription.setText(itinerary.getDescription());
-        EditText etCreateTitle = (EditText) v.findViewById(R.id.etCreateTitle);
-        etCreateTitle.setText(itinerary.getTitle());
+//        Itinerary itinerary = (Itinerary) Parcels.unwrap(getArguments().getParcelable("itinerary"));
+        String itineraryId = (String) getArguments().getString("itineraryId");
+
+        ParseQuery<Itinerary> query = ParseQuery.getQuery(Itinerary.class);
+        query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK); // or CACHE_ONLY
+        query.getInBackground(itineraryId, new GetCallback<Itinerary>() {
+            public void done(Itinerary itinerary, ParseException e) {
+                if (e == null) {
+                    // item was found
+                    etCreateDescription.setText(itinerary.getDescription());
+                    etCreateTitle.setText(itinerary.getTitle());
+                }
+            }
+        });
 
         Button btnCreateDone = (Button) v.findViewById(R.id.btnCreateDone);
         btnCreateDone.setOnClickListener(new View.OnClickListener() {

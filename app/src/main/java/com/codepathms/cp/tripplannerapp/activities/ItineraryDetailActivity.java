@@ -12,18 +12,19 @@ import com.codepathms.cp.tripplannerapp.models.Itinerary;
 import org.parceler.Parcels;
 
 public class ItineraryDetailActivity extends AppCompatActivity {
-    Itinerary itinerary;
+    String itineraryId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_itinerary_detail);
 
-        itinerary = (Itinerary) Parcels.unwrap(getIntent().getParcelableExtra("itinerary"));
+//        itinerary = (Itinerary) Parcels.unwrap(getIntent().getParcelableExtra("itinerary"));
+        itineraryId = (String) getIntent().getExtras().getString("itineraryId");
 
         if (savedInstanceState == null) {
-            ItineraryDetailHeaderFragment itineraryDetailHeaderFragment = ItineraryDetailHeaderFragment.newInstance(itinerary);
-            ItineraryDetailTimelineFragment itineraryDetailTimelineFragment = ItineraryDetailTimelineFragment.newInstance(itinerary);
+            ItineraryDetailHeaderFragment itineraryDetailHeaderFragment = ItineraryDetailHeaderFragment.newInstance(itineraryId);
+            ItineraryDetailTimelineFragment itineraryDetailTimelineFragment = ItineraryDetailTimelineFragment.newInstance(itineraryId);
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             ft.replace(R.id.flDetailHeaderContainer, itineraryDetailHeaderFragment, "ITINERARY_DETAIL_HEADER");
             ft.replace(R.id.flDetailTimelineContainer, itineraryDetailTimelineFragment, "ITINERARY_DETAIL_TIMELINE");
