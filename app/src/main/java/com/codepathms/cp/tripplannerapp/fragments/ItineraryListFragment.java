@@ -37,6 +37,13 @@ public class ItineraryListFragment extends Fragment {
     public ItineraryArrayAdapter itineraryAdapter;
     public ListView lvItineraries;
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        itineraryAdapter.clear();
+        getItineraries();
+    }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {

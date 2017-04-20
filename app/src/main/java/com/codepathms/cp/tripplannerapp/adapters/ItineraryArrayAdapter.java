@@ -20,7 +20,9 @@ import com.parse.ParseQuery;
 import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by melissa on 4/4/17.
@@ -43,6 +45,13 @@ public class ItineraryArrayAdapter extends ArrayAdapter<Itinerary> {
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_itinerary, parent, false);
         }
+        ivItineraryItemBookmark = (ImageView) convertView.findViewById(R.id.ivItineraryItemBookmark);
+
+        Glide.with(getContext())
+                .load(R.drawable.ic_bookmark_border)
+                .placeholder(R.drawable.ic_bookmark_border)
+                .centerCrop()
+                .into(ivItineraryItemBookmark);
 
         TextView tvItineraryTitle = (TextView) convertView.findViewById(R.id.tvItineraryItemTitle);
         tvItineraryTitle.setText(itinerary.getTitle());
@@ -60,8 +69,6 @@ public class ItineraryArrayAdapter extends ArrayAdapter<Itinerary> {
                     .into(ivItineraryItemPhoto);
         }
 
-        ivItineraryItemBookmark = (ImageView) convertView.findViewById(R.id.ivItineraryItemBookmark);
-
         ParseUser curUser = ParseUser.getCurrentUser();
         ParseRelation<ParseObject> relation = curUser.getRelation("bookmarkedItineraries");
         ParseQuery<ParseObject> relquery = relation.getQuery();
@@ -72,17 +79,18 @@ public class ItineraryArrayAdapter extends ArrayAdapter<Itinerary> {
                     // There was an error
                 } else {
                     // results have all the Posts the current user liked.
+                    Set<String> objIds= new HashSet<String>();
                     for (int i = 0; i< results.size(); i++) {
-                        if ((results.get(i).getObjectId()).equals(itinerary.getObjectId())) {
-                            Glide.with(getContext())
-                                    .load(R.drawable.ic_bookmark)
-                                    .placeholder(R.drawable.ic_bookmark)
-                                    .centerCrop()
-                                    .into(ivItineraryItemBookmark);
-                            break;
-                        }
-
+                        objIds.add(results.get(i).getObjectId());
                     }
+                    if (objIds.contains(itinerary.getObjectId())) {
+                        Glide.with(getContext())
+                                .load(R.drawable.ic_bookmark)
+                                .placeholder(R.drawable.ic_bookmark)
+                                .centerCrop()
+                                .into(ivItineraryItemBookmark);
+                    }
+
                 }
             }
         });

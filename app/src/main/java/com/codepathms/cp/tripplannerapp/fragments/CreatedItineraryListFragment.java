@@ -1,7 +1,6 @@
 package com.codepathms.cp.tripplannerapp.fragments;
 
 import android.util.Log;
-import android.widget.Toast;
 
 import com.codepathms.cp.tripplannerapp.models.Itinerary;
 import com.parse.FindCallback;
@@ -26,7 +25,7 @@ public class CreatedItineraryListFragment extends ItineraryListFragment {
         query.findInBackground(new FindCallback<Itinerary>() {
             public void done(List<Itinerary> itineraries, ParseException e) {
                 if (e == null) {
-                    Toast.makeText(getContext(), "#"+itineraries.size(), Toast.LENGTH_SHORT).show();
+//                    Toast.makeText(getContext(), "#"+itineraries.size(), Toast.LENGTH_SHORT).show();
                     itineraryList.addAll(itineraries);
                     itineraryAdapter.notifyDataSetChanged();
 

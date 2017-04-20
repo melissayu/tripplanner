@@ -85,6 +85,7 @@ public class ItineraryDetailHeaderFragment extends Fragment {
                 ParseRelation<ParseObject> relation = curUser.getRelation("bookmarkedItineraries");
                 ParseQuery<ParseObject> relquery = relation.getQuery();
 //                relquery.whereKey(curItinerary.getObjectId());
+//                relquery.include("Itinerary");
                 relquery.findInBackground(new FindCallback<ParseObject>() {
                     public void done(List<ParseObject> results, ParseException e) {
                         if (e != null) {
@@ -92,6 +93,7 @@ public class ItineraryDetailHeaderFragment extends Fragment {
                         } else {
                             // results have all the Posts the current user liked.
                             for (int i = 0; i< results.size(); i++) {
+//                                if (results.contains(curItinerary)) {
                                 if ((results.get(i).getObjectId()).equals(curItinerary.getObjectId())) {
                                     isBookmarked = true;
                                     Glide.with(getContext())

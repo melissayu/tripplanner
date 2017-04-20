@@ -33,6 +33,26 @@ public class MainActivity extends AppCompatActivity {
         //Set up viewpager for tabs
         ViewPager viewPager = (ViewPager) findViewById(R.id.viewpager);
         viewPager.setAdapter(new ItinerariesPagerAdapter(getSupportFragmentManager()));
+        viewPager.addOnPageChangeListener(new ViewPager.SimpleOnPageChangeListener() {
+
+            // optional
+            @Override
+            public void onPageSelected(int position) {
+                if (position == 0) {
+                    itineraryListFragment.itineraryAdapter.clear();
+                    itineraryListFragment.getItineraries();
+                }
+                else if (position == 1) {
+                    savedItineraryListFragment.itineraryAdapter.clear();
+                    savedItineraryListFragment.getItineraries();
+                }
+                else if (position == 2) {
+                    createdItineraryListFragment.itineraryAdapter.clear();
+                    createdItineraryListFragment.getItineraries();
+                }
+            }
+        });
+
         PagerSlidingTabStrip pagerSlidingTabStrip = (PagerSlidingTabStrip) findViewById(R.id.tabs);
         pagerSlidingTabStrip.setViewPager(viewPager);
 
