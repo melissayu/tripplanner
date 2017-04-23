@@ -16,10 +16,10 @@
     <LinearLayout
         android:id="@+id/lvAddStop"
         android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:background="@color/common_google_signin_btn_text_dark_disabled"
+        android:layout_height="wrap_content"
+        android:background="#e0f2f1"
         android:orientation="vertical"
-        android:padding="20dp">
+        android:padding="5dp">
 
         <TextView
             android:id="@+id/textView"

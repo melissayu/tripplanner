@@ -40,15 +40,15 @@ public class MainActivity extends AppCompatActivity {
             public void onPageSelected(int position) {
                 if (position == 0) {
                     itineraryListFragment.itineraryAdapter.clear();
-                    itineraryListFragment.getItineraries();
+                    itineraryListFragment.getBookmarkedItineraries();
                 }
                 else if (position == 1) {
                     savedItineraryListFragment.itineraryAdapter.clear();
-                    savedItineraryListFragment.getItineraries();
+                    savedItineraryListFragment.getBookmarkedItineraries();
                 }
                 else if (position == 2) {
                     createdItineraryListFragment.itineraryAdapter.clear();
-                    createdItineraryListFragment.getItineraries();
+                    createdItineraryListFragment.getBookmarkedItineraries();
                 }
             }
         });
@@ -150,6 +150,24 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+        MenuItemCompat.setOnActionExpandListener(searchItem,
+                new MenuItemCompat.OnActionExpandListener() {
+                    @Override
+                    public boolean onMenuItemActionExpand(MenuItem menuItem) {
+                        // Return true to allow the action view to expand
+                        return true;
+                    }
+
+                    @Override
+                    public boolean onMenuItemActionCollapse(MenuItem menuItem) {
+                        // When the action view is collapsed, reset the query
+                        itineraryListFragment.getBookmarkedItineraries();
+                        // Return true to allow the action view to collapse
+                        return true;
+                    }
+        });
+
         return super.onCreateOptionsMenu(menu);
     }
 }

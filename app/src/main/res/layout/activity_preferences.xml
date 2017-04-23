@@ -10,8 +10,11 @@
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
         android:text="What are you interested in?"
-        android:layout_centerHorizontal="true" />
+        android:textSize="20sp" />
 
     <Button
         android:id="@+id/btnNext"
@@ -28,7 +31,10 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView2"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="26dp"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_shape_grey"
+        android:minHeight="20dp"
+        android:padding="5dp"
         android:text="Food" />
 
     <Button
@@ -41,6 +47,9 @@
         android:layout_marginRight="11dp"
         android:layout_toLeftOf="@+id/btnFood"
         android:layout_toStartOf="@+id/btnFood"
+        android:background="@drawable/button_shape_grey"
+        android:minHeight="20dp"
+        android:padding="5dp"
         android:text="Outdoor" />
 
     <Button
@@ -53,6 +62,9 @@
         android:layout_marginStart="12dp"
         android:layout_toEndOf="@+id/btnFood"
         android:layout_toRightOf="@+id/btnFood"
+        android:background="@drawable/button_shape_grey"
+        android:minHeight="20dp"
+        android:padding="5dp"
         android:text="Tours" />
 
     <Button
@@ -63,6 +75,9 @@
         android:layout_alignStart="@+id/btnOutdoor"
         android:layout_below="@+id/btnOutdoor"
         android:layout_marginTop="16dp"
+        android:background="@drawable/button_shape_grey"
+        android:minHeight="20dp"
+        android:padding="5dp"
         android:text="Drinks" />
 
     <Button
@@ -72,6 +87,9 @@
         android:layout_alignLeft="@+id/btnFood"
         android:layout_alignStart="@+id/btnFood"
         android:layout_alignTop="@+id/btnDrinks"
+        android:background="@drawable/button_shape_grey"
+        android:minHeight="20dp"
+        android:padding="5dp"
         android:text="Sports" />
 
     <Button
@@ -81,6 +99,9 @@
         android:layout_alignLeft="@+id/btnTours"
         android:layout_alignStart="@+id/btnTours"
         android:layout_alignTop="@+id/btnSports"
+        android:background="@drawable/button_shape_grey"
+        android:minHeight="20dp"
+        android:padding="5dp"
         android:text="Arts" />
 
     <Button
@@ -91,6 +112,9 @@
         android:layout_alignStart="@+id/btnDrinks"
         android:layout_below="@+id/btnDrinks"
         android:layout_marginTop="17dp"
+        android:background="@drawable/button_shape_grey"
+        android:minHeight="20dp"
+        android:padding="5dp"
         android:text="Clubs" />
 
     <Button
@@ -101,6 +125,9 @@
         android:layout_alignRight="@+id/btnClubs"
         android:layout_below="@+id/btnClubs"
         android:layout_marginTop="19dp"
+        android:background="@drawable/button_shape_grey"
+        android:minHeight="20dp"
+        android:padding="5dp"
         android:text="Music" />
 
     <Button
@@ -110,6 +137,9 @@
         android:layout_alignLeft="@+id/btnSports"
         android:layout_alignStart="@+id/btnSports"
         android:layout_alignTop="@+id/btnClubs"
+        android:background="@drawable/button_shape_grey"
+        android:minHeight="20dp"
+        android:padding="5dp"
         android:text="Shops" />
 
     <Button
@@ -119,7 +149,10 @@
         android:layout_alignEnd="@+id/btnArts"
         android:layout_alignRight="@+id/btnArts"
         android:layout_alignTop="@+id/btnShops"
-        android:text="Hike" />
+        android:background="@drawable/button_shape_grey"
+        android:minHeight="20dp"
+        android:padding="5dp"
+        android:text="Hiking" />
 
     <Button
         android:id="@+id/btnMovies"
@@ -128,6 +161,9 @@
         android:layout_alignLeft="@+id/btnShops"
         android:layout_alignStart="@+id/btnShops"
         android:layout_alignTop="@+id/btnMusic"
+        android:background="@drawable/button_shape_grey"
+        android:minHeight="20dp"
+        android:padding="5dp"
         android:text="Movies" />
 
     <Button
@@ -137,6 +173,110 @@
         android:layout_alignLeft="@+id/btnHike"
         android:layout_alignStart="@+id/btnHike"
         android:layout_alignTop="@+id/btnMovies"
+        android:background="@drawable/button_shape_grey"
+        android:minHeight="20dp"
+        android:padding="5dp"
         android:text="Museum" />
+
+
+    <TextView
+        android:id="@+id/tvTransitLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/btnMovies"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="Preferred method of transportation?"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/btnDrive"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvTransitLabel"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_shape_grey"
+        android:minHeight="20dp"
+        android:padding="5dp"
+        android:text="Drive" />
+
+    <Button
+        android:id="@+id/btnWalk"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnDrive"
+        android:layout_alignBottom="@+id/btnDrive"
+        android:layout_marginEnd="11dp"
+        android:layout_marginRight="11dp"
+        android:layout_toLeftOf="@+id/btnDrive"
+        android:layout_toStartOf="@+id/btnDrive"
+        android:background="@drawable/button_shape_grey"
+        android:minHeight="20dp"
+        android:padding="5dp"
+        android:text="Walk" />
+
+    <Button
+        android:id="@+id/btnPublic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btnDrive"
+        android:layout_alignBottom="@+id/btnDrive"
+        android:layout_marginLeft="12dp"
+        android:layout_marginStart="12dp"
+        android:layout_toEndOf="@+id/btnDrive"
+        android:layout_toRightOf="@+id/btnDrive"
+        android:background="@drawable/button_shape_grey"
+        android:minHeight="20dp"
+        android:padding="5dp"
+        android:text="Public" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/btnDrive"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="24dp"
+        android:text="Preferred price range?"
+        android:textSize="20sp" />
+
+    <Button
+        android:id="@+id/btnDollarOne"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/btnWalk"
+        android:layout_alignRight="@+id/btnWalk"
+        android:layout_below="@+id/textView4"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/button_shape_grey"
+        android:minHeight="20dp"
+        android:padding="5dp"
+        android:text="$" />
+
+    <Button
+        android:id="@+id/btnDollarTwo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/btnDollarOne"
+        android:layout_toEndOf="@+id/btnWalk"
+        android:layout_toRightOf="@+id/btnWalk"
+        android:background="@drawable/button_shape_grey"
+        android:minHeight="20dp"
+        android:padding="5dp"
+        android:text="$$" />
+
+    <Button
+        android:id="@+id/btnDollarThree"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/btnPublic"
+        android:layout_alignRight="@+id/btnPublic"
+        android:layout_alignTop="@+id/btnDollarTwo"
+        android:background="@drawable/button_shape_grey"
+        android:minHeight="20dp"
+        android:padding="5dp"
+        android:text="$$$" />
+
 
 </RelativeLayout>

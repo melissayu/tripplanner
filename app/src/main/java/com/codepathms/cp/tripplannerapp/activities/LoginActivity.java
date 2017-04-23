@@ -6,6 +6,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.codepathms.cp.tripplannerapp.R;
 import com.parse.LogInCallback;
@@ -15,18 +16,49 @@ import com.parse.SignUpCallback;
 
 public class LoginActivity extends AppCompatActivity {
 
+    Boolean isLoginMode; // false = sign up mode
+    EditText etLoginUsername;
+    EditText etLoginPassword;
+    EditText etLoginEmail;
+    TextView tvSignUp;
+    TextView tvLogin;
+    Button btnLogin;
+    Button btnSignup;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        final EditText etLoginUsername = (EditText) findViewById(R.id.etLoginUsername);
-        final EditText etLoginPassword = (EditText) findViewById(R.id.etLoginPassword);
-        final EditText etLoginEmail = (EditText) findViewById(R.id.etLoginEmail);
+        //Initially set as login mode
+        isLoginMode = true;
 
+        etLoginUsername = (EditText) findViewById(R.id.etLoginUsername);
+        etLoginPassword = (EditText) findViewById(R.id.etLoginPassword);
+        etLoginEmail = (EditText) findViewById(R.id.etLoginEmail);
+        tvSignUp = (TextView) findViewById(R.id.tvSignUp);
+        tvLogin = (TextView) findViewById(R.id.tvLogin);
 
+        btnLogin = (Button) findViewById(R.id.btnLogin);
+        btnSignup = (Button) findViewById(R.id.btnSignup);
 
-        Button btnLogin = (Button) findViewById(R.id.btnLogin);
+        setupViews();
+
+        tvSignUp.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleLoginMode();
+            }
+        });
+
+        tvLogin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                toggleLoginMode();
+            }
+        });
+
         btnLogin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -36,7 +68,6 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
-        Button btnSignup = (Button) findViewById(R.id.btnSignup);
         btnSignup.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -46,6 +77,33 @@ public class LoginActivity extends AppCompatActivity {
                         etLoginEmail.getText().toString());
             }
         });
+    }
+
+    public void toggleLoginMode(){
+        if (isLoginMode) {
+            isLoginMode = false;
+        } else {
+            isLoginMode = true;
+        }
+        setupViews();
+    }
+
+    public void setupViews() {
+        if (isLoginMode) { // Hide
+            tvSignUp.setVisibility(View.VISIBLE);
+            tvLogin.setVisibility(View.GONE);
+            btnLogin.setVisibility(View.VISIBLE);
+            etLoginEmail.setVisibility(View.GONE);
+            btnSignup.setVisibility(View.GONE);
+        } else {
+            tvSignUp.setVisibility(View.GONE);
+            tvLogin.setVisibility(View.VISIBLE);
+            btnLogin.setVisibility(View.GONE);
+            etLoginEmail.setVisibility(View.VISIBLE);
+            btnSignup.setVisibility(View.VISIBLE);
+        }
+
+
     }
 
 

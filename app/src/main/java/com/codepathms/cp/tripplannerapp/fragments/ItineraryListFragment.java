@@ -20,11 +20,15 @@ import com.codepathms.cp.tripplannerapp.adapters.ItineraryArrayAdapter;
 import com.codepathms.cp.tripplannerapp.models.Itinerary;
 import com.parse.FindCallback;
 import com.parse.ParseException;
+import com.parse.ParseObject;
 import com.parse.ParseQuery;
+import com.parse.ParseRelation;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by melissa on 4/4/17.
@@ -37,11 +41,13 @@ public class ItineraryListFragment extends Fragment {
     public ItineraryArrayAdapter itineraryAdapter;
     public ListView lvItineraries;
 
+    public Set<String> bookmarkedItineraryIds;
+
     @Override
     public void onResume() {
         super.onResume();
         itineraryAdapter.clear();
-        getItineraries();
+        getBookmarkedItineraries();
     }
 
     @Nullable
@@ -82,17 +88,51 @@ public class ItineraryListFragment extends Fragment {
         super.onActivityResult(requestCode, resultCode, data);
     }
 
+    public void getBookmarkedItineraries() {
+        bookmarkedItineraryIds.clear();
+        ParseUser curUser = ParseUser.getCurrentUser();
+        ParseRelation<ParseObject> relation = curUser.getRelation("bookmarkedItineraries");
+        ParseQuery<ParseObject> relquery = relation.getQuery();
+        relquery.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> results, ParseException e) {
+                if (e != null) {
+                    // There was an error
+                } else {
+                    // results have all the Posts the current user liked.
+                    for (int i = 0; i< results.size(); i++) {
+                        bookmarkedItineraryIds.add(results.get(i).getObjectId());
+                    }
+                    getItineraries();
+                }
+
+            }
+        });
+
+    }
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
 
         itineraryList = new ArrayList<>();
-        itineraryAdapter = new ItineraryArrayAdapter(getActivity(), itineraryList);
+        bookmarkedItineraryIds = new HashSet<String>();
 
-        getItineraries();
-//        itineraryList.addAll(getItineraries());
-//        itineraryAdapter.notifyDataSetChanged();
+
+        itineraryAdapter = new ItineraryArrayAdapter(getActivity(), itineraryList, bookmarkedItineraryIds);
+        getBookmarkedItineraries();
+//        getItineraries();
+    }
+
+
+    public void updateItineraryBookmarks(Set<String> bookmarked){
+        for (int i = 0; i < itineraryList.size(); i++) {
+            if (bookmarked.contains(itineraryList.get(i).getObjectId())){
+                itineraryList.get(i).bookmarked = true;
+            }
+        }
+
+        itineraryAdapter.notifyDataSetChanged();
     }
 
     public void newItineraryCreated(String newItineraryId) {
@@ -111,11 +151,13 @@ public class ItineraryListFragment extends Fragment {
         query.findInBackground(new FindCallback<Itinerary>() {
             public void done(List<Itinerary> itineraries, ParseException e) {
                 if (e == null) {
+                    itineraryList.clear();
                     itineraryList.addAll(itineraries);
                     /* creating some mock data if DB is empty*/
                     if (itineraryList.size() == 0) {
 //                        itineraryList.addAll(createMockDataItineraries());
                     }
+                    updateItineraryBookmarks(bookmarkedItineraryIds);
                     itineraryAdapter.notifyDataSetChanged();
                 } else {
                     Log.d("score", "Error: " + e.getMessage());

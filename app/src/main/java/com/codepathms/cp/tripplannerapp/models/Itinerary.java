@@ -1,10 +1,13 @@
 package com.codepathms.cp.tripplannerapp.models;
 
 import com.parse.ParseClassName;
+import com.parse.ParseFile;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import org.parceler.Parcel;
+
+import java.util.List;
 
 /**
  * Created by melissa on 4/3/17.
@@ -42,6 +45,8 @@ public class Itinerary extends ParseObject {
     ArrayList<Stop> stops;
     */
 
+    public Boolean bookmarked;
+
     public Itinerary() {
         super();
     }
@@ -74,6 +79,23 @@ public class Itinerary extends ParseObject {
     public String getImageUrl() {
         return getString("imageUrl");
     }
+
+    public void setImageBitmap(ParseFile image) {
+        put("image", image);
+    }
+
+    public ParseFile getImageBitmap() {
+        return getParseFile("image");
+    }
+
+    public void setFeatures(List<String> features) {
+        put("features", features);
+    }
+
+    public List<String> getFeatures() {
+        return getList("features");
+    }
+
 
     // Get the user for this item
     public ParseUser getUser()  {

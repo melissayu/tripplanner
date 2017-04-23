@@ -9,9 +9,11 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import com.codepathms.cp.tripplannerapp.R;
+import com.parse.ParseException;
 import com.parse.ParseUser;
 
 import java.util.ArrayList;
+import java.util.List;
 
 //import com.codepathms.cp.tripplannerapp.models.ParseUser;
 
@@ -53,348 +55,477 @@ public class PreferencesActivity extends AppCompatActivity {
     boolean btnMoviesClicked = false;
     boolean btnMuseumClicked = false;
 
-    private ArrayList<String> preferences = new ArrayList<>();
+    Button btnWalk;
+    Button btnDrive;
+    Button btnPublic;
+
+    Button btnDollarOne;
+    Button btnDollarTwo;
+    Button btnDollarThree;
+
+    boolean btnWalkClicked = false;
+    boolean btnDriveClicked = false;
+    boolean btnPublicClicked = false;
+
+    boolean btnDollarOneClicked = false;
+    boolean btnDollarTwoClicked = false;
+    boolean btnDollarThreeClicked = false;
 
     private ParseUser currentUser;
-//    private ParseUser currentParseUser = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_preferences);
 
-        getPreferences();
-
         currentUser = ParseUser.getCurrentUser();
 
+        getPreferences();
+        setupPrefButtons();
 
-//        if(currentParseUser != null) {
-//            System.out.println("fef");
-//        }
         Button btnNext = (Button) findViewById(R.id.btnNext);
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent preferenceIntent = new Intent(getApplicationContext(), Preferences2Activity.class);
-                preferenceIntent.putExtra("preferences", preferences);
+                savePreferences();
+                Intent preferenceIntent = new Intent(getApplicationContext(), MainActivity.class);
                 startActivity(preferenceIntent);
             }
         });
-/*
+    }
+
+    public void setupPrefButtons() {
         btnOutdoor = (Button) findViewById(R.id.btnOutdoor);
-        if(currentParseUser != null &&
-                currentParseUser.getUserPreferences() != null &&
-                currentParseUser.getUserPreferences().contains("OUTDOOR")) {
-            btnOutdoor.setBackgroundColor(CLICKED_COLOR);
-            btnOutdoorClicked = true;
+        if (btnOutdoorClicked) {
+            btnOutdoor.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
         }
         btnOutdoor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btnOutdoorClicked) {
-                    btnOutdoor.setBackgroundColor(UNCLICKED_COLOR);
-                    int index = preferences.indexOf("OUTDOOR");
-                    if( index >= 0 ) {
-                        preferences.remove(index);
-                    }
-                } else {
-                    btnOutdoor.setBackgroundColor(CLICKED_COLOR);
-                    preferences.add("OUTDOOR");
-                }
                 btnOutdoorClicked = !btnOutdoorClicked;
+                if (btnOutdoorClicked) {
+                    btnOutdoor.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+                } else {
+                    btnOutdoor.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                }
+
             }
         });
 
-
         btnFood = (Button) findViewById(R.id.btnFood);
-        if(currentParseUser != null &&
-                currentParseUser.getUserPreferences() != null &&
-                currentParseUser.getUserPreferences().contains("FOOD")) {
-            btnFood.setBackgroundColor(CLICKED_COLOR);
-            btnFoodClicked = true;
+        if (btnFoodClicked) {
+            btnFood.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
         }
         btnFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btnFoodClicked) {
-                    btnFood.setBackgroundColor(UNCLICKED_COLOR);
-                    int index = preferences.indexOf("FOOD");
-                    if( index >= 0 ) {
-                        preferences.remove(index);
-                    }
-                } else {
-                    btnFood.setBackgroundColor(CLICKED_COLOR);
-                    preferences.add("FOOD");
-                }
                 btnFoodClicked = !btnFoodClicked;
+                if (btnFoodClicked) {
+                    btnFood.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+                } else {
+                    btnFood.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                }
+
             }
         });
 
         btnTours = (Button) findViewById(R.id.btnTours);
-        if(currentParseUser != null &&
-                currentParseUser.getUserPreferences() != null &&
-                currentParseUser.getUserPreferences().contains("TOURS")) {
-            btnTours.setBackgroundColor(CLICKED_COLOR);
-            btnToursClicked = true;
+        if (btnToursClicked) {
+            btnTours.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
         }
         btnTours.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btnToursClicked) {
-                    btnTours.setBackgroundColor(UNCLICKED_COLOR);
-                    int index = preferences.indexOf("TOURS");
-                    if( index >= 0 ) {
-                        preferences.remove(index);
-                    }
-                } else {
-                    btnTours.setBackgroundColor(CLICKED_COLOR);
-                    preferences.add("TOURS");
-                }
                 btnToursClicked = !btnToursClicked;
+                if (btnToursClicked) {
+                    btnTours.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+                } else {
+                    btnTours.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                }
+
             }
         });
 
         btnDrinks = (Button) findViewById(R.id.btnDrinks);
-        if(currentParseUser != null &&
-                currentParseUser.getUserPreferences() != null &&
-                currentParseUser.getUserPreferences().contains("DRINKS")) {
-            btnDrinks.setBackgroundColor(CLICKED_COLOR);
-            btnDrinksClicked = true;
+        if (btnDrinksClicked) {
+            btnDrinks.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
         }
         btnDrinks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btnDrinksClicked) {
-                    btnDrinks.setBackgroundColor(UNCLICKED_COLOR);
-                    int index = preferences.indexOf("DRINKS");
-                    if( index >= 0 ) {
-                        preferences.remove(index);
-                    }
-                } else {
-                    btnDrinks.setBackgroundColor(CLICKED_COLOR);
-                    preferences.add("DRINKS");
-                }
                 btnDrinksClicked = !btnDrinksClicked;
+                if (btnDrinksClicked) {
+                    btnDrinks.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+                } else {
+                    btnDrinks.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                }
+
             }
         });
 
         btnSports = (Button) findViewById(R.id.btnSports);
-        if(currentParseUser != null &&
-                currentParseUser.getUserPreferences() != null &&
-                currentParseUser.getUserPreferences().contains("SPORTS")) {
-            btnSports.setBackgroundColor(CLICKED_COLOR);
-            btnSportsClicked = true;
+        if (btnSportsClicked) {
+            btnSports.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
         }
         btnSports.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btnSportsClicked) {
-                    btnSports.setBackgroundColor(UNCLICKED_COLOR);
-                    int index = preferences.indexOf("SPORTS");
-                    if( index >= 0 ) {
-                        preferences.remove(index);
-                    }
-                } else {
-                    btnSports.setBackgroundColor(CLICKED_COLOR);
-                    preferences.add("SPORTS");
-                }
                 btnSportsClicked = !btnSportsClicked;
+                if (btnSportsClicked) {
+                    btnSports.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+                } else {
+                    btnSports.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                }
+
             }
         });
 
         btnArts = (Button) findViewById(R.id.btnArts);
-        if(currentParseUser != null &&
-                currentParseUser.getUserPreferences() != null &&
-                currentParseUser.getUserPreferences().contains("ARTS")) {
-            btnArts.setBackgroundColor(CLICKED_COLOR);
-            btnArtsClicked = true;
+        if (btnArtsClicked) {
+            btnArts.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
         }
         btnArts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btnArtsClicked) {
-                    btnArts.setBackgroundColor(UNCLICKED_COLOR);
-                    int index = preferences.indexOf("ARTS");
-                    if( index >= 0 ) {
-                        preferences.remove(index);
-                    }
-                } else {
-                    btnArts.setBackgroundColor(CLICKED_COLOR);
-                    preferences.add("ARTS");
-                }
                 btnArtsClicked = !btnArtsClicked;
+                if (btnArtsClicked) {
+                    btnArts.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+                } else {
+                    btnArts.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                }
+
             }
         });
 
         btnClubs = (Button) findViewById(R.id.btnClubs);
-        if(currentParseUser != null &&
-                currentParseUser.getUserPreferences() != null &&
-                currentParseUser.getUserPreferences().contains("CLUBS")) {
-            btnClubs.setBackgroundColor(CLICKED_COLOR);
-            btnClubsClicked = true;
+        if (btnClubsClicked) {
+            btnClubs.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
         }
         btnClubs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btnClubsClicked) {
-                    btnClubs.setBackgroundColor(UNCLICKED_COLOR);
-                    int index = preferences.indexOf("CLUBS");
-                    if( index >= 0 ) {
-                        preferences.remove(index);
-                    }
-                } else {
-                    btnClubs.setBackgroundColor(CLICKED_COLOR);
-                    preferences.add("CLUBS");
-                }
                 btnClubsClicked = !btnClubsClicked;
+                if (btnClubsClicked) {
+                    btnClubs.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+                } else {
+                    btnClubs.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                }
+
             }
         });
 
         btnShops = (Button) findViewById(R.id.btnShops);
-        if(currentParseUser != null &&
-                currentParseUser.getUserPreferences() != null &&
-                currentParseUser.getUserPreferences().contains("SHOPS")) {
-            btnShops.setBackgroundColor(CLICKED_COLOR);
-            btnShopsClicked = true;
+        if (btnShopsClicked) {
+            btnShops.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
         }
         btnShops.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btnShopsClicked) {
-                    btnShops.setBackgroundColor(UNCLICKED_COLOR);
-                    int index = preferences.indexOf("SHOPS");
-                    if( index >= 0 ) {
-                        preferences.remove(index);
-                    }
-                } else {
-                    btnShops.setBackgroundColor(CLICKED_COLOR);
-                    preferences.add("SHOPS");
-                }
                 btnShopsClicked = !btnShopsClicked;
+                if (btnShopsClicked) {
+                    btnShops.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+                } else {
+                    btnShops.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                }
+
             }
         });
 
         btnHike = (Button) findViewById(R.id.btnHike);
-        if(currentParseUser != null &&
-                currentParseUser.getUserPreferences() != null &&
-                currentParseUser.getUserPreferences().contains("HIKE")) {
-            btnHike.setBackgroundColor(CLICKED_COLOR);
-            btnHikeClicked = true;
+        if (btnHikeClicked) {
+            btnHike.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
         }
         btnHike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btnHikeClicked) {
-                    btnHike.setBackgroundColor(UNCLICKED_COLOR);
-                    int index = preferences.indexOf("HIKE");
-                    if( index >= 0 ) {
-                        preferences.remove(index);
-                    }
-                } else {
-                    btnHike.setBackgroundColor(CLICKED_COLOR);
-                    preferences.add("HIKE");
-                }
                 btnHikeClicked = !btnHikeClicked;
+                if (btnHikeClicked) {
+                    btnHike.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+                } else {
+                    btnHike.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                }
+
             }
         });
 
         btnMusic = (Button) findViewById(R.id.btnMusic);
-        if(currentParseUser != null &&
-                currentParseUser.getUserPreferences() != null &&
-                currentParseUser.getUserPreferences().contains("MUSIC")) {
-            btnMusic.setBackgroundColor(CLICKED_COLOR);
-            btnMusicClicked = true;
+        if (btnMusicClicked) {
+            btnMusic.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
         }
         btnMusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btnMusicClicked) {
-                    btnMusic.setBackgroundColor(UNCLICKED_COLOR);
-                    int index = preferences.indexOf("MUSIC");
-                    if( index >= 0 ) {
-                        preferences.remove(index);
-                    }
-                } else {
-                    btnMusic.setBackgroundColor(CLICKED_COLOR);
-                    preferences.add("MUSIC");
-                }
                 btnMusicClicked = !btnMusicClicked;
+                if (btnMusicClicked) {
+                    btnMusic.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+                } else {
+                    btnMusic.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                }
+
             }
         });
 
         btnMovies = (Button) findViewById(R.id.btnMovies);
-        if(currentParseUser != null &&
-                currentParseUser.getUserPreferences() != null &&
-                currentParseUser.getUserPreferences().contains("MOVIES")) {
-            btnMovies.setBackgroundColor(CLICKED_COLOR);
-            btnMoviesClicked = true;
+        if (btnMoviesClicked) {
+            btnMovies.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
         }
         btnMovies.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btnMoviesClicked) {
-                    btnMovies.setBackgroundColor(UNCLICKED_COLOR);
-                    int index = preferences.indexOf("MOVIES");
-                    if( index >= 0 ) {
-                        preferences.remove(index);
-                    }
-                } else {
-                    btnMovies.setBackgroundColor(CLICKED_COLOR);
-                    preferences.add("MOVIES");
-                }
                 btnMoviesClicked = !btnMoviesClicked;
+                if (btnMoviesClicked) {
+                    btnMovies.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+                } else {
+                    btnMovies.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                }
+
             }
         });
 
         btnMuseum = (Button) findViewById(R.id.btnMuseum);
-        if(currentParseUser != null &&
-                currentParseUser.getUserPreferences() != null &&
-                currentParseUser.getUserPreferences().contains("MUSEUM")) {
-            btnMuseum.setBackgroundColor(CLICKED_COLOR);
-            btnMuseumClicked = true;
+        if (btnMuseumClicked) {
+            btnMuseum.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
         }
         btnMuseum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(btnMuseumClicked) {
-                    btnMuseum.setBackgroundColor(UNCLICKED_COLOR);
-                    int index = preferences.indexOf("MUSEUM");
-                    if( index >= 0 ) {
-                        preferences.remove(index);
-                    }
-                } else {
-                    btnMuseum.setBackgroundColor(CLICKED_COLOR);
-                    preferences.add("MUSEUM");
-                }
                 btnMuseumClicked = !btnMuseumClicked;
+                if (btnMuseumClicked) {
+                    btnMuseum.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+                } else {
+                    btnMuseum.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                }
+
             }
         });
-        */
 
+        btnDollarOne = (Button) findViewById(R.id.btnDollarOne);
+        if (btnDollarOneClicked) {
+            btnDollarOne.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+        }
+        btnDollarOne.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnDollarOneClicked = !btnDollarOneClicked;
+                if (btnDollarOneClicked) {
+                    btnDollarOne.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+                } else {
+                    btnDollarOne.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                }
+
+            }
+        });
+
+        btnDollarTwo = (Button) findViewById(R.id.btnDollarTwo);
+        if (btnDollarTwoClicked) {
+            btnDollarTwo.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+        }
+        btnDollarTwo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnDollarTwoClicked = !btnDollarTwoClicked;
+                if (btnDollarTwoClicked) {
+                    btnDollarTwo.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+                } else {
+                    btnDollarTwo.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                }
+
+            }
+        });
+
+        btnDollarThree = (Button) findViewById(R.id.btnDollarThree);
+        if (btnDollarThreeClicked) {
+            btnDollarThree.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+        }
+        btnDollarThree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                btnDollarThreeClicked = !btnDollarThreeClicked;
+                if (btnDollarThreeClicked) {
+                    btnDollarThree.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+                } else {
+                    btnDollarThree.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                }
+
+            }
+        });
+
+        btnWalk = (Button) findViewById(R.id.btnWalk);
+        btnDrive = (Button) findViewById(R.id.btnDrive);
+        btnPublic = (Button) findViewById(R.id.btnPublic);
+        if (btnWalkClicked) {
+            btnWalk.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+            btnDriveClicked = false;
+            btnDrive.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+            btnPublicClicked = false;
+            btnPublic.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+        }
+        btnWalk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!btnWalkClicked) {
+                    btnWalkClicked = true;
+                    btnWalk.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+                    btnDriveClicked = false;
+                    btnDrive.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                    btnPublicClicked = false;
+                    btnPublic.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                }
+
+            }
+        });
+
+        if (btnDriveClicked) {
+            btnDrive.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+            btnWalkClicked = false;
+            btnWalk.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+            btnPublicClicked = false;
+            btnPublic.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+        }
+        btnDrive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!btnDriveClicked) {
+                    btnDriveClicked = true;
+                    btnDrive.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+                    btnWalkClicked = false;
+                    btnWalk.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                    btnPublicClicked = false;
+                    btnPublic.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                }
+
+            }
+        });
+
+        if (btnPublicClicked) {
+            btnPublic.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+            btnWalkClicked = false;
+            btnWalk.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+            btnDriveClicked = false;
+            btnDrive.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+        }
+        btnPublic.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!btnPublicClicked) {
+                    btnPublicClicked = true;
+                    btnPublic.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+                    btnWalkClicked = false;
+                    btnWalk.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                    btnDriveClicked = false;
+                    btnDrive.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                }
+
+            }
+        });
     }
 
     void getPreferences() {
-        /*
-        // Construct query to execute
-        ParseQuery<ParseUser> query = ParseQuery.getQuery(ParseUser.class);
+        String transitPrefs = currentUser.getString("transitPrefs");
+        if (transitPrefs != null) {
+            if (transitPrefs.equals("Walk")) {
+                btnWalkClicked = true;
+            } else if (transitPrefs.equals("Drive")) {
+                btnDriveClicked = true;
+            } else if (transitPrefs.equals("Public")) {
+                btnPublicClicked = true;
+            }
+        }
 
-        // get the latest 500 messages, order will show up newest to oldest of this group
-        query.orderByAscending("createdAt");
-
-        // Execute query to fetch all messages from Parse asynchronously
-        // This is equivalent to a SELECT query with SQL
-        List<ParseUser> messages = null;
-        try {
-            messages = query.find();
-            for(int i=0; i < messages.size(); ++i) {
-                if(currentUser.equals(messages.get(i).getUsername())) {
-                    currentParseUser = messages.get(i);
-                    preferences = (ArrayList<String>) currentParseUser.getUserPreferences();
+        List<String> pricePrefs = currentUser.getList("pricePrefs");
+        if (pricePrefs != null) {
+            for (int j = 0; j < pricePrefs.size(); j++) {
+                switch (pricePrefs.get(j)) {
+                    case "$":
+                        btnDollarOneClicked = true;
+                        break;
+                    case "$$":
+                        btnDollarTwoClicked = true;
+                        break;
+                    case "$$$":
+                        btnDollarThreeClicked = true;
+                        break;
                 }
             }
+        }
+
+        List<String> featurePrefs = currentUser.getList("featurePrefs");
+        if (featurePrefs != null) {
+            for (int i = 0; i < featurePrefs.size(); i++ ){
+                switch (featurePrefs.get(i)) {
+                    case "Outdoor":
+                        btnOutdoorClicked = true;
+                        break;
+                    case "Food":
+                        btnFoodClicked = true;
+                        break;
+                    case "Tours":
+                        btnToursClicked = true;
+                        break;
+                    case "Drinks":
+                        btnDrinksClicked = true;
+                        break;
+                    case "Sports":
+                        btnSportsClicked = true;
+                        break;
+                    case "Arts":
+                        btnArtsClicked = true;
+                        break;
+                    case "Clubs":
+                        btnClubsClicked = true;
+                        break;
+                    case "Shops":
+                        btnShopsClicked = true;
+                        break;
+                    case "Hiking":
+                        btnHikeClicked = true;
+                        break;
+                    case "Music":
+                        btnMusicClicked = true;
+                        break;
+                    case "Movies":
+                        btnMoviesClicked = true;
+                        break;
+                    case "Museum":
+                        btnMuseumClicked = true;
+                        break;
+                }
+            }
+        }
+    }
+
+    public void savePreferences() {
+        List<String> newFeaturePrefs = new ArrayList<>();
+        if (btnOutdoorClicked) newFeaturePrefs.add("Outdoor");
+        if (btnFoodClicked) newFeaturePrefs.add("Food");
+        if (btnToursClicked) newFeaturePrefs.add("Tours");
+        if (btnDrinksClicked) newFeaturePrefs.add("Drinks");
+        if (btnSportsClicked) newFeaturePrefs.add("Sports");
+        if (btnArtsClicked) newFeaturePrefs.add("Arts");
+        if (btnClubsClicked) newFeaturePrefs.add("Clubs");
+        if (btnShopsClicked) newFeaturePrefs.add("Shops");
+        if (btnHikeClicked) newFeaturePrefs.add("Hiking");
+        if (btnMusicClicked) newFeaturePrefs.add("Music");
+        if (btnMoviesClicked) newFeaturePrefs.add("Movies");
+        if (btnMuseumClicked) newFeaturePrefs.add("Museum");
+        currentUser.put("featurePrefs", newFeaturePrefs);
+
+        List<String> newPricePrefs = new ArrayList<>();
+        if (btnDollarOneClicked) newPricePrefs.add("$");
+        if (btnDollarTwoClicked) newPricePrefs.add("$$");
+        if (btnDollarThreeClicked) newPricePrefs.add("$$$");
+        currentUser.put("pricePrefs", newPricePrefs);
+
+        String transitPrefs = "";
+        if (btnWalkClicked) transitPrefs+="Walk";
+        else if (btnDriveClicked) transitPrefs+="Drive";
+        else if (btnPublicClicked) transitPrefs+="Public";
+        currentUser.put("transitPrefs", transitPrefs);
+
+        try {
+            currentUser.save();
         } catch (ParseException e) {
             e.printStackTrace();
         }
-        */
     }
 }

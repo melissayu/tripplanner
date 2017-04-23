@@ -1,10 +1,14 @@
 package com.codepathms.cp.tripplannerapp.models;
 
+import android.graphics.Bitmap;
+
 import com.parse.ParseClassName;
 import com.parse.ParseObject;
 import com.parse.ParseUser;
 
 import org.parceler.Parcel;
+
+import java.util.List;
 
 /**
  * Created by melissa on 4/3/17.
@@ -26,6 +30,8 @@ import org.parceler.Parcel;
 //@Table(database = MyDatabase.class)
 @ParseClassName("Stop")
 public class Stop extends ParseObject {
+
+    public Bitmap bitmap;
 
     public Stop() {
         super();
@@ -76,6 +82,22 @@ public class Stop extends ParseObject {
         return getString("address");
     }
 
+    public void setLat(Double lat) {
+        put("lat", lat);
+    }
+
+    public Double getLat() {
+        return getDouble("lat");
+    }
+
+    public void setLng(Double lng) {
+        put("lng", lng);
+    }
+
+    public Double getLng() {
+        return getDouble("lng");
+    }
+
     public void setItineraryId(String itineraryId) {
         put("itineraryId", itineraryId);
     }
@@ -88,9 +110,26 @@ public class Stop extends ParseObject {
         put("sequence", sequence);
     }
 
+    public int getPricePoint() {
+        return getInt("pricePoint");
+    }
+
+    public void setPricePoint(int pricePoint) {
+        put("pricePoint", pricePoint);
+    }
+
     public int getSequenceNumber() {
         return getInt("sequence");
     }
+
+    public void setPlaceTypes(List<String> placeTypes) {
+        put("placeTypes", placeTypes);
+    }
+
+    public List<String> getPlaceTypes() {
+        return getList("placeTypes");
+    }
+
 
     // Get the user for this item
     public ParseUser getUser()  {

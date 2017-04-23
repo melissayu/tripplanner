@@ -12,6 +12,12 @@ import android.widget.ListView;
 import com.codepathms.cp.tripplannerapp.R;
 import com.codepathms.cp.tripplannerapp.adapters.StopArrayAdapter;
 import com.codepathms.cp.tripplannerapp.models.Stop;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.places.PlacePhotoMetadataBuffer;
+import com.google.android.gms.location.places.PlacePhotoMetadataResult;
+import com.google.android.gms.location.places.PlacePhotoResult;
+import com.google.android.gms.location.places.Places;
 import com.parse.FindCallback;
 import com.parse.ParseException;
 import com.parse.ParseQuery;
@@ -30,6 +36,8 @@ public class ItineraryDetailTimelineFragment extends Fragment {
     //ArrayList<Stop> stopsList;
     List<Stop> stopList;
     private StopArrayAdapter stopsAdapter;
+    GoogleApiClient mGoogleApiClient;
+    int curStop;
 
     public static ItineraryDetailTimelineFragment newInstance(String itineraryId) {
         ItineraryDetailTimelineFragment itineraryDetailTimelineFragment = new ItineraryDetailTimelineFragment();
@@ -37,6 +45,29 @@ public class ItineraryDetailTimelineFragment extends Fragment {
         args.putString("itineraryId", itineraryId);
         itineraryDetailTimelineFragment.setArguments(args);
         return itineraryDetailTimelineFragment;
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        mGoogleApiClient = new GoogleApiClient
+                .Builder( getContext() )
+                .addApi( Places.GEO_DATA_API )
+                .addApi( Places.PLACE_DETECTION_API )
+                .build();
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        mGoogleApiClient.connect();
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        mGoogleApiClient.disconnect();
     }
 
     @Nullable
@@ -71,6 +102,7 @@ public class ItineraryDetailTimelineFragment extends Fragment {
                     if (stopList.size() == 0) {
 //                        stopList.addAll(createMockDataStops());
                     }
+                    getStopsPhotos();
                     stopsAdapter.notifyDataSetChanged();
 
                 } else {
@@ -82,6 +114,61 @@ public class ItineraryDetailTimelineFragment extends Fragment {
 
         return (ArrayList<Stop>)stopList;
     }
+
+    public void getStopsPhotos(){
+        if (curStop < stopList.size()) {
+            placePhotosAsync();
+
+        }
+//        for (int i = 0; i < stopList.size(); i++) {
+//            curStop = stopList.get(i);
+//            placePhotosAsync(curStop);
+//        }
+    }
+
+    /**
+     * Load a bitmap from the photos API asynchronously
+     * by using buffers and result callbacks.
+     */
+    private void placePhotosAsync() {
+//        final String placeId = "ChIJrTLr-GyuEmsRBfy61i59si0"; // Australian Cruise Group
+        Places.GeoDataApi.getPlacePhotos(mGoogleApiClient, stopList.get(curStop).getPlaceId())
+                .setResultCallback(new ResultCallback<PlacePhotoMetadataResult>() {
+
+                    @Override
+                    public void onResult(PlacePhotoMetadataResult photos) {
+                        if (!photos.getStatus().isSuccess()) {
+                            return;
+                        }
+
+                        PlacePhotoMetadataBuffer photoMetadataBuffer = photos.getPhotoMetadata();
+                        if (photoMetadataBuffer.getCount() > 0) {
+                            // Display the first bitmap in an ImageView in the size of the view
+                            photoMetadataBuffer.get(0)
+                                    .getPhoto(mGoogleApiClient)
+                                    .setResultCallback(mDisplayPhotoResultCallback);
+                        }
+                        photoMetadataBuffer.release();
+                    }
+                });
+    }
+
+    private ResultCallback<PlacePhotoResult> mDisplayPhotoResultCallback
+            = new ResultCallback<PlacePhotoResult>() {
+        @Override
+        public void onResult(PlacePhotoResult placePhotoResult) {
+            if (!placePhotoResult.getStatus().isSuccess()) {
+                return;
+            }
+            stopList.get(curStop).bitmap = placePhotoResult.getBitmap();
+            stopsAdapter.notifyDataSetChanged();
+            curStop++;
+            getStopsPhotos();
+
+//            ivStopItemPhoto.setImageBitmap(placePhotoResult.getBitmap());
+        }
+    };
+
 
     public ArrayList<Stop> createMockDataStops() {
         ArrayList<Stop> mockStops = new ArrayList<Stop>();

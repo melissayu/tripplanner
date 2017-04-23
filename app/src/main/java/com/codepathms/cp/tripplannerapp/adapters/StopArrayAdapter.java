@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.codepathms.cp.tripplannerapp.R;
 import com.codepathms.cp.tripplannerapp.models.Stop;
+import com.codepathms.cp.tripplannerapp.services.Utils;
 
 import java.util.List;
 
@@ -24,10 +25,20 @@ import java.util.List;
 
 public class StopArrayAdapter extends ArrayAdapter<Stop> {
     private Context context;
+    ImageView ivStopItemPhoto;
+//    GoogleApiClient mGoogleApiClient;
 
     public StopArrayAdapter(Context context, List<Stop> stops) {
         super(context, android.R.layout.simple_list_item_1, stops);
         this.context = context;
+
+//        mGoogleApiClient = new GoogleApiClient
+//                .Builder( getContext() )
+//                .addApi( Places.GEO_DATA_API )
+//                .addApi( Places.PLACE_DETECTION_API )
+//                .build();
+//        mGoogleApiClient.connect();
+
     }
 
     @NonNull
@@ -43,6 +54,8 @@ public class StopArrayAdapter extends ArrayAdapter<Stop> {
         tvStopTitle.setText(stop.getTitle());
         TextView tvStopAddress = (TextView) convertView.findViewById(R.id.tvStopAddress);
         tvStopAddress.setText(stop.getAddress());
+        TextView tvStopFeatures = (TextView) convertView.findViewById(R.id.tvStopFeatures);
+        tvStopFeatures.setText(Utils.createFeaturesString(stop.getPlaceTypes()));
 
         TextView tvNav = (TextView) convertView.findViewById(R.id.tvNavTitle);
         tvNav.setOnClickListener(new View.OnClickListener() {
@@ -52,15 +65,27 @@ public class StopArrayAdapter extends ArrayAdapter<Stop> {
             }
         });
 
-        ImageView ivStopItemPhoto = (ImageView) convertView.findViewById(R.id.ivStopItemPhoto);
-        if (stop.getImageUrl() == null) {
+        ivStopItemPhoto = (ImageView) convertView.findViewById(R.id.ivStopItemPhoto);
+        /*if (stop.getImageUrl() != null) {
             Glide.with(context)
-                    .load("http://i.imgur.com/XWi7KBJ.jpg") //just a default image
+                    .load(stop.getImageUrl())
                     .centerCrop()
                     .into(ivStopItemPhoto);
         } else {
             Glide.with(context)
-                    .load(stop.getImageUrl())
+                    .load(R.drawable.gradient) //just a default image
+                    .placeholder(R.drawable.gradient)
+                    .centerCrop()
+                    .into(ivStopItemPhoto);
+        }
+        //placePhotosAsync(stop.getPlaceId());
+        */
+        if (stop.bitmap != null) {
+            ivStopItemPhoto.setImageBitmap(stop.bitmap);
+        } else {
+            Glide.with(context)
+                    .load(R.drawable.gradient) //just a default image
+                    .placeholder(R.drawable.gradient)
                     .centerCrop()
                     .into(ivStopItemPhoto);
         }
@@ -77,4 +102,6 @@ public class StopArrayAdapter extends ArrayAdapter<Stop> {
         getContext().startActivity(Intent.createChooser(intent, "Select an application"));
 
     }
+
+
 }

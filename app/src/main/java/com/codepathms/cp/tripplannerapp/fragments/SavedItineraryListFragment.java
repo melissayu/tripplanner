@@ -34,8 +34,10 @@ public class SavedItineraryListFragment extends ItineraryListFragment {
                 if (e != null) {
                     // There was an error
                 } else {
+                    itineraryList.clear();
                     // results have all the Posts the current user liked.
                     itineraryList.addAll(results);
+                    updateItineraryBookmarks(bookmarkedItineraryIds);
                     itineraryAdapter.notifyDataSetChanged();
 
                 }

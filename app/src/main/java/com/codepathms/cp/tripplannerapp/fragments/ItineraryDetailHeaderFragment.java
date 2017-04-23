@@ -1,5 +1,6 @@
 package com.codepathms.cp.tripplannerapp.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -11,7 +12,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.codepathms.cp.tripplannerapp.R;
+import com.codepathms.cp.tripplannerapp.activities.MapActivity;
 import com.codepathms.cp.tripplannerapp.models.Itinerary;
+import com.codepathms.cp.tripplannerapp.services.Utils;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -52,7 +55,18 @@ public class ItineraryDetailHeaderFragment extends Fragment {
         final TextView tvItineraryDetailTitle = (TextView) v.findViewById(R.id.tvItineraryDetailTitle);
         final TextView tvItineraryDetailDescription = (TextView) v.findViewById(R.id.tvItineraryDetailDescription);
         final TextView tvItineraryDetailFeatures = (TextView) v.findViewById(R.id.tvItineraryDetailFeatures);
-        final ImageView ivItineraryDetailPhoto = (ImageView) v.findViewById(R.id.ivItineraryDetailPhoto);
+       // final ImageView ivItineraryDetailPhoto = (ImageView) v.findViewById(R.id.ivItineraryDetailPhoto);
+
+        final ImageView ivItineraryDetailMap = (ImageView) v.findViewById(R.id.ivItineraryDetailMap);
+        ivItineraryDetailMap.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), MapActivity.class);
+                intent.putExtra("itineraryId", curItinerary.getObjectId());
+                startActivity(intent);
+            }
+        });
+
         ivItineraryDetailBookmark = (ImageView) v.findViewById(R.id.ivItineraryDetailBookmark);
 
 //        Itinerary i = (Itinerary) Parcels.unwrap(getArguments().getParcelable("itinerary"));
@@ -67,9 +81,11 @@ public class ItineraryDetailHeaderFragment extends Fragment {
                     curItinerary = itinerary;
                     tvItineraryDetailTitle.setText(itinerary.getTitle());
                     tvItineraryDetailDescription.setText(itinerary.getDescription());
+                    tvItineraryDetailFeatures.setText(Utils.createFeaturesString(curItinerary.getFeatures()));
+
                     //tvItineraryDetailFeatures.setText(i.getTags());
 
-                    if (itinerary.getImageUrl() == null) {
+                    /*if (itinerary.getImageUrl() == null) {
                         Glide.with(getContext())
                                 .load("http://i.imgur.com/XWi7KBJ.jpg") //just a default image
                                 .centerCrop()
@@ -79,7 +95,7 @@ public class ItineraryDetailHeaderFragment extends Fragment {
                                 .load(itinerary.getImageUrl())
                                 .centerCrop()
                                 .into(ivItineraryDetailPhoto);
-                    }
+                    }*/
                 }
                 curUser = ParseUser.getCurrentUser();
                 ParseRelation<ParseObject> relation = curUser.getRelation("bookmarkedItineraries");

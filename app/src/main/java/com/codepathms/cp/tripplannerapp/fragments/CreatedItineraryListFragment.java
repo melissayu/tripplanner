@@ -25,8 +25,10 @@ public class CreatedItineraryListFragment extends ItineraryListFragment {
         query.findInBackground(new FindCallback<Itinerary>() {
             public void done(List<Itinerary> itineraries, ParseException e) {
                 if (e == null) {
+                    itineraryList.clear();
 //                    Toast.makeText(getContext(), "#"+itineraries.size(), Toast.LENGTH_SHORT).show();
                     itineraryList.addAll(itineraries);
+                    updateItineraryBookmarks(bookmarkedItineraryIds);
                     itineraryAdapter.notifyDataSetChanged();
 
                 } else {

@@ -57,7 +57,8 @@ public class Preferences2Activity extends AppCompatActivity {
 
         currentUser = ParseUser.getCurrentUser();
 
-        preferences = (ArrayList<String>) getIntent().getSerializableExtra("preferences");
+        //preferences = (ArrayList<String>) getIntent().getSerializableExtra("preferences");
+        preferences = new ArrayList<>();
         Log.e("ABC", preferences.toString());
         etCity = (EditText) findViewById(R.id.etCity);
 
