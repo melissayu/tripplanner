@@ -1,9 +1,12 @@
 package com.codepathms.cp.tripplannerapp.fragments;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.codepathms.cp.tripplannerapp.R;
 import com.codepathms.cp.tripplannerapp.activities.MapActivity;
 import com.codepathms.cp.tripplannerapp.models.Itinerary;
+import com.codepathms.cp.tripplannerapp.models.Stop;
 import com.codepathms.cp.tripplannerapp.services.Utils;
 import com.parse.FindCallback;
 import com.parse.GetCallback;
@@ -49,7 +53,7 @@ public class ItineraryDetailHeaderFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 //        return super.onCreateView(inflater, container, savedInstanceState);
         View v = inflater.inflate(R.layout.fragment_itinerary_detail_header, container, false);
-
+        curUser = ParseUser.getCurrentUser();
         isBookmarked = false;
 
         final TextView tvItineraryDetailTitle = (TextView) v.findViewById(R.id.tvItineraryDetailTitle);
@@ -67,6 +71,39 @@ public class ItineraryDetailHeaderFragment extends Fragment {
             }
         });
 
+        final ImageView ivItineraryDetailDelete = (ImageView) v.findViewById(R.id.ivItineraryDetailDelete);
+        ivItineraryDetailDelete.setVisibility(View.GONE);
+        ivItineraryDetailDelete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(getActivity())
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .setTitle("Confirm Delete")
+                        .setMessage("Are you sure you want to delete this itinerary?")
+                        .setPositiveButton("Yes", new DialogInterface.OnClickListener()
+                        {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //finish();
+                                //Delete all stops plus itinerary
+                                try {
+                                    String curItineraryId = curItinerary.getObjectId();
+                                    curItinerary.delete();
+                                    deleteStops(curItineraryId);
+                                    getActivity().finish();
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+
+                        })
+                        .setNegativeButton("No", null)
+                        .show();
+
+            }
+        });
+
+
         ivItineraryDetailBookmark = (ImageView) v.findViewById(R.id.ivItineraryDetailBookmark);
 
 //        Itinerary i = (Itinerary) Parcels.unwrap(getArguments().getParcelable("itinerary"));
@@ -83,6 +120,12 @@ public class ItineraryDetailHeaderFragment extends Fragment {
                     tvItineraryDetailDescription.setText(itinerary.getDescription());
                     tvItineraryDetailFeatures.setText(Utils.createFeaturesString(curItinerary.getFeatures()));
 
+                    if (curItinerary.getParseUser("owner").getObjectId().equals(curUser.getObjectId())) {
+                        ivItineraryDetailDelete.setVisibility(View.VISIBLE);
+                    } else {
+                        ivItineraryDetailDelete.setVisibility(View.GONE);
+                    }
+
                     //tvItineraryDetailFeatures.setText(i.getTags());
 
                     /*if (itinerary.getImageUrl() == null) {
@@ -97,7 +140,6 @@ public class ItineraryDetailHeaderFragment extends Fragment {
                                 .into(ivItineraryDetailPhoto);
                     }*/
                 }
-                curUser = ParseUser.getCurrentUser();
                 ParseRelation<ParseObject> relation = curUser.getRelation("bookmarkedItineraries");
                 ParseQuery<ParseObject> relquery = relation.getQuery();
 //                relquery.whereKey(curItinerary.getObjectId());
@@ -139,6 +181,23 @@ public class ItineraryDetailHeaderFragment extends Fragment {
         return v;
 
     }
+
+
+    public void deleteStops(String itineraryId) {
+
+        ParseQuery<Stop> query = ParseQuery.getQuery("Stop");
+        query.whereEqualTo("itineraryId", itineraryId);
+        query.findInBackground(new FindCallback<Stop>() {
+            public void done(List<Stop> stops, ParseException e) {
+                if (e == null) {
+                    ParseObject.deleteAllInBackground(stops);
+                } else {
+                    Log.d("score", "Error: " + e.getMessage());
+                }
+            }
+        });
+    }
+
 
     public void toggleBookmark(){
         ParseRelation<ParseObject> relation = curUser.getRelation("bookmarkedItineraries");

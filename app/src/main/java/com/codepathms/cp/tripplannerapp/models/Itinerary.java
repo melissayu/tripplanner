@@ -46,6 +46,7 @@ public class Itinerary extends ParseObject {
     */
 
     public Boolean bookmarked;
+    public int matchLevel = 1; //1 = high relevance, 3 = low
 
     public Itinerary() {
         super();

@@ -4,6 +4,7 @@ import android.content.Context;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,8 +51,22 @@ public class ItineraryArrayAdapter extends ArrayAdapter<Itinerary> {
                 .centerCrop()
                 .into(ivItineraryItemBookmark);
 
+        CardView cvItinerary = (CardView) convertView.findViewById(R.id.cvItinerary);
+        if (itinerary.matchLevel == 1) {
+            cvItinerary.setCardBackgroundColor(getContext().getResources().getColor(R.color.green));
+        } else if (itinerary.matchLevel == 2) {
+            cvItinerary.setCardBackgroundColor(getContext().getResources().getColor(R.color.yellow));
+        } else if (itinerary.matchLevel == 3) {
+            cvItinerary.setCardBackgroundColor(getContext().getResources().getColor(R.color.red));
+        } else {
+            cvItinerary.setCardBackgroundColor(getContext().getResources().getColor(R.color.colorPrimary));
+        }
+
         TextView tvItineraryTitle = (TextView) convertView.findViewById(R.id.tvItineraryItemTitle);
         tvItineraryTitle.setText(itinerary.getTitle());
+
+        TextView tvItineraryDescription = (TextView) convertView.findViewById(R.id.tvItineraryItemDescription);
+        tvItineraryDescription.setText(itinerary.getDescription());
 
         TextView tvItineraryItemFeature = (TextView) convertView.findViewById(R.id.tvItineraryItemFeature);
         tvItineraryItemFeature.setText(Utils.createFeaturesString(itinerary.getFeatures()));

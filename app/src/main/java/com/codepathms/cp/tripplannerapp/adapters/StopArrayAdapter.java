@@ -16,6 +16,7 @@ import com.bumptech.glide.Glide;
 import com.codepathms.cp.tripplannerapp.R;
 import com.codepathms.cp.tripplannerapp.models.Stop;
 import com.codepathms.cp.tripplannerapp.services.Utils;
+import com.parse.ParseUser;
 
 import java.util.List;
 
@@ -26,12 +27,15 @@ import java.util.List;
 public class StopArrayAdapter extends ArrayAdapter<Stop> {
     private Context context;
     ImageView ivStopItemPhoto;
+    ParseUser currentUser;
+    int currentPosition;
 //    GoogleApiClient mGoogleApiClient;
 
     public StopArrayAdapter(Context context, List<Stop> stops) {
         super(context, android.R.layout.simple_list_item_1, stops);
         this.context = context;
 
+        currentUser = ParseUser.getCurrentUser();
 //        mGoogleApiClient = new GoogleApiClient
 //                .Builder( getContext() )
 //                .addApi( Places.GEO_DATA_API )
@@ -44,6 +48,7 @@ public class StopArrayAdapter extends ArrayAdapter<Stop> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
+        currentPosition = position;
         final Stop stop =  getItem(position);
 
         if (convertView == null) {
@@ -96,8 +101,36 @@ public class StopArrayAdapter extends ArrayAdapter<Stop> {
 
 
     public void openNav(String addr){
+        String transitMode = ""; //Driving dir by default
+        if (currentUser.get("transitPrefs") != null) {
+            if (currentUser.get("transitPrefs").equals("Walk")) {
+                transitMode = "w";
+            } else if (currentUser.get("transitPrefs").equals("Drive")) {
+                transitMode = "d";
+            } else if (currentUser.get("transitPrefs").equals("Public")) {
+                transitMode = "r";
+            }
+        }
+        //https://www.google.com/maps/preview?saddr=[insert_from_address_here]&daddr=[insert_to_address_here]&dirflg=[insert_mode_here]
+//        w: walking
+//        b: bicycling
+//        d or h or t: drive
+//        r: public transit
+
 //        String uri = "http://maps.google.com/maps?f=d&hl=en&saddr="+latitude1+","+longitude1+"&daddr="+latitude2+","+longitude2;
         String uri = "http://maps.google.com/maps?f=d&hl=en&daddr="+addr;
+
+        if (currentPosition > 0) {
+            Stop prevStop =  getItem(currentPosition-1);
+            String prevAddress = prevStop.getAddress();
+            uri += "&saddr="+prevAddress;
+        }
+
+
+        if (!transitMode.equals("")) {
+            uri += "&dirflg="+transitMode;
+        }
+
         Intent intent = new Intent(android.content.Intent.ACTION_VIEW, Uri.parse(uri));
         getContext().startActivity(Intent.createChooser(intent, "Select an application"));
 

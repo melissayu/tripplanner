@@ -16,6 +16,7 @@ import com.codepathms.cp.tripplannerapp.R;
 import com.codepathms.cp.tripplannerapp.activities.CreateItineraryActivity;
 import com.codepathms.cp.tripplannerapp.activities.CreateItineraryDetailActivity;
 import com.codepathms.cp.tripplannerapp.activities.ItineraryDetailActivity;
+import com.codepathms.cp.tripplannerapp.activities.PreferencesActivity;
 import com.codepathms.cp.tripplannerapp.adapters.ItineraryArrayAdapter;
 import com.codepathms.cp.tripplannerapp.models.Itinerary;
 import com.parse.FindCallback;
@@ -76,6 +77,16 @@ public class ItineraryListFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(getActivity().getApplicationContext(), CreateItineraryActivity.class);
+                startActivityForResult(i,10);
+
+            }
+        });
+
+        FloatingActionButton fabPrefs = (FloatingActionButton) v.findViewById(R.id.fabPrefs);
+        fabPrefs.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getActivity().getApplicationContext(), PreferencesActivity.class);
                 startActivityForResult(i,10);
 
             }
@@ -154,9 +165,9 @@ public class ItineraryListFragment extends Fragment {
             public void done(List<Itinerary> itineraries, ParseException e) {
                 if (e == null) {
                     itineraryList.clear();
-                    itineraryList.addAll(itineraries);
+                    itineraryList.addAll(reorderItineraries(itineraries));
 
-                    reorderItineraries();
+                    ;
                     /* creating some mock data if DB is empty*/
 //                    if (itineraryList.size() == 0) {
 //                        itineraryList.addAll(createMockDataItineraries());
@@ -172,20 +183,59 @@ public class ItineraryListFragment extends Fragment {
         return (ArrayList<Itinerary>)itineraryList;
     }
 
-    public ArrayList<Itinerary> reorderItineraries() {
+    public ArrayList<Itinerary> reorderItineraries(List<Itinerary> itineraries) {
         ArrayList<Itinerary> orderedItineraries = new ArrayList<>();
+        ArrayList<Itinerary> medRelevance = new ArrayList<>();
+        ArrayList<Itinerary> lowRelevance = new ArrayList<>();
 
+        List<Integer> pricePrefs = currentUser.getList("pricePrefs");
+        List<String> featurePrefs = currentUser.getList("featurePrefs");
+
+        for (int i = 0; i < itineraries.size(); i++ ){
+            Boolean priceMatch = pricePrefs.contains(itineraries.get(i).getPricePoint());
+            List<String> itineraryFeatures = itineraries.get(i).getFeatures();
+            Boolean featureMatch = false;
+            if (itineraryFeatures != null) {
+                for (int j = 0; j < featurePrefs.size(); j++) {
+                    if (itineraryFeatures.contains(featurePrefs.get(j))) {
+                        featureMatch = true;
+                        break;
+                    }
+                }
+            }
+            if (priceMatch && featureMatch) {
+                itineraries.get(i).matchLevel = 1;
+                orderedItineraries.add(itineraries.get(i));
+            } else if (priceMatch || featureMatch) {
+                itineraries.get(i).matchLevel = 2;
+                medRelevance.add(itineraries.get(i));
+            } else {
+                itineraries.get(i).matchLevel = 3;
+                lowRelevance.add(itineraries.get(i));
+            }
+        }
+
+        orderedItineraries.addAll(medRelevance);
+        orderedItineraries.addAll(lowRelevance);
         return orderedItineraries;
     }
 
     public ArrayList<Itinerary> getItineraries(String queryString) {
-        ParseQuery<Itinerary> query = ParseQuery.getQuery("Itinerary");
-        query.whereContains("title", queryString);
-        query.findInBackground(new FindCallback<Itinerary>() {
-            public void done(List<Itinerary> itineraries, ParseException e) {
+        ParseQuery<ParseObject> query1 = ParseQuery.getQuery("Itinerary");
+        query1.whereContains("title", queryString);
+        ParseQuery<ParseObject> query2 = ParseQuery.getQuery("Itinerary");
+        query2.whereContains("description", queryString);
+
+        List<ParseQuery<ParseObject>> list = new ArrayList<ParseQuery<ParseObject>>();
+        list.add(query1);
+        list.add(query2);
+
+        ParseQuery<ParseObject> query = ParseQuery.or(list);
+        query.findInBackground(new FindCallback<ParseObject>() {
+            public void done(List<ParseObject> itineraries, ParseException e) {
                 if (e == null) {
                     itineraryAdapter.clear();
-                    itineraryList.addAll(itineraries);
+                    itineraryList.addAll((List<Itinerary>)(Object)itineraries);
                     itineraryAdapter.notifyDataSetChanged();
                 } else {
                     Log.d("score", "Error: " + e.getMessage());

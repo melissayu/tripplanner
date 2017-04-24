@@ -1,5 +1,6 @@
 package com.codepathms.cp.tripplannerapp.fragments;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.codepathms.cp.tripplannerapp.R;
+import com.codepathms.cp.tripplannerapp.activities.ItineraryDetailActivity;
 import com.codepathms.cp.tripplannerapp.models.Itinerary;
 import com.parse.GetCallback;
 import com.parse.ParseException;
@@ -20,6 +22,7 @@ import com.parse.ParseQuery;
  */
 
 public class ItineraryCreateHeaderFragment extends Fragment{
+    private final int REQUEST_CODE = 20;
 
 /*
     @Override
@@ -53,7 +56,7 @@ public class ItineraryCreateHeaderFragment extends Fragment{
         final TextView etCreateTitle = (TextView) v.findViewById(R.id.etCreateTitle);
 
 //        Itinerary itinerary = (Itinerary) Parcels.unwrap(getArguments().getParcelable("itinerary"));
-        String itineraryId = (String) getArguments().getString("itineraryId");
+        final String itineraryId = (String) getArguments().getString("itineraryId");
 
         ParseQuery<Itinerary> query = ParseQuery.getQuery(Itinerary.class);
         query.setCachePolicy(ParseQuery.CachePolicy.CACHE_ELSE_NETWORK); // or CACHE_ONLY
@@ -71,7 +74,11 @@ public class ItineraryCreateHeaderFragment extends Fragment{
         btnCreateDone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent i = new Intent(getActivity().getApplicationContext(), ItineraryDetailActivity.class);
+                i.putExtra("itineraryId", itineraryId);
                 getActivity().finish();
+                startActivityForResult(i, REQUEST_CODE);
+                //getActivity().finish();
                 //Itinerary itinerary = saveItinerary();
                 //mCallback.onItinerarySave(itinerary);
             }

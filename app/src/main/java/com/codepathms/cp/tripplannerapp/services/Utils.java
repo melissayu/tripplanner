@@ -3,7 +3,9 @@ package com.codepathms.cp.tripplannerapp.services;
 import com.google.android.gms.location.places.Place;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 /**
  * Created by melissa on 4/22/17.
@@ -13,39 +15,51 @@ public class Utils {
 
     public static List<String> convertPlaceTypes(List<Integer> placeTypeInts){
         ArrayList<String> placeTypeStrings = new ArrayList<>();
-
+        Set<String> placeTypeSet = new HashSet<>();
         for (int i = 0; i < placeTypeInts.size(); i++) {
             String placeTypeString = placeTypeToString(placeTypeInts.get(i));
             if (!placeTypeString.equals("")) {
-                placeTypeStrings.add(placeTypeString);
+                placeTypeSet.add(placeTypeString);
             }
         }
-
+        placeTypeStrings.addAll(placeTypeSet);
         return placeTypeStrings;
     }
 
     public static String placeTypeToString(Integer placeType) {
         switch (placeType) {
             case Place.TYPE_ACCOUNTING:
-                return "Accounting";
+                return "Other";
             case Place.TYPE_AIRPORT:
                 return "Airport";
             case Place.TYPE_AMUSEMENT_PARK:
                 return "Amusement Park";
             case Place.TYPE_BAR:
-                return "Bar";
+                return "Drinks";
             case Place.TYPE_CAFE:
-                return "Cafe";
+                return "Food";
             case Place.TYPE_DEPARTMENT_STORE:
-                return "Department Store";
+                return "Shops";
             case Place.TYPE_MOVIE_THEATER:
-                return "Movie Theater";
+                return "Movies";
             case Place.TYPE_PARK:
-                return "Park";
+                return "Outdoor";
             case Place.TYPE_STORE:
-                return "Store";
+                return "Shops";
             case Place.TYPE_RESTAURANT:
-                return "Restaurant";
+                return "Food";
+            case Place.TYPE_BAKERY:
+                return "Food";
+            case Place.TYPE_ART_GALLERY:
+                return "Arts";
+            case Place.TYPE_FOOD:
+                return "Food";
+            case Place.TYPE_SHOPPING_MALL:
+                return "Shops";
+            case Place.TYPE_MUSEUM:
+                return "Museum";
+            case Place.TYPE_NIGHT_CLUB:
+                return "Clubs";
             default:
                 return "";
         }
