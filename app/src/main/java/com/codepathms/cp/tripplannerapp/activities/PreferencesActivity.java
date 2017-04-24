@@ -432,17 +432,17 @@ public class PreferencesActivity extends AppCompatActivity {
             }
         }
 
-        List<String> pricePrefs = currentUser.getList("pricePrefs");
+        List<Integer> pricePrefs = currentUser.getList("pricePrefs");
         if (pricePrefs != null) {
             for (int j = 0; j < pricePrefs.size(); j++) {
                 switch (pricePrefs.get(j)) {
-                    case "$":
+                    case 1:
                         btnDollarOneClicked = true;
                         break;
-                    case "$$":
+                    case 2:
                         btnDollarTwoClicked = true;
                         break;
-                    case "$$$":
+                    case 3:
                         btnDollarThreeClicked = true;
                         break;
                 }
@@ -510,10 +510,10 @@ public class PreferencesActivity extends AppCompatActivity {
         if (btnMuseumClicked) newFeaturePrefs.add("Museum");
         currentUser.put("featurePrefs", newFeaturePrefs);
 
-        List<String> newPricePrefs = new ArrayList<>();
-        if (btnDollarOneClicked) newPricePrefs.add("$");
-        if (btnDollarTwoClicked) newPricePrefs.add("$$");
-        if (btnDollarThreeClicked) newPricePrefs.add("$$$");
+        List<Integer> newPricePrefs = new ArrayList<>();
+        if (btnDollarOneClicked) newPricePrefs.add(1);
+        if (btnDollarTwoClicked) newPricePrefs.add(2);
+        if (btnDollarThreeClicked) newPricePrefs.add(3);
         currentUser.put("pricePrefs", newPricePrefs);
 
         String transitPrefs = "";

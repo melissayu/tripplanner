@@ -261,6 +261,13 @@ public class ItineraryCreateTimelineFragment extends Fragment{
 
         placePhotosAsync();
 
+        int pricePoint = stop.getPricePoint();
+        if (itinerary.getPricePoint() < pricePoint) {
+            itinerary.setPricePoint(pricePoint);
+        }
+
+
+
         itinerary.saveInBackground();
     }
 

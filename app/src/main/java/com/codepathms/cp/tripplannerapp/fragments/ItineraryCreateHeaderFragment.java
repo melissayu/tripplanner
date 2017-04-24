@@ -7,7 +7,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.TextView;
 
 import com.codepathms.cp.tripplannerapp.R;
 import com.codepathms.cp.tripplannerapp.models.Itinerary;
@@ -49,8 +49,8 @@ public class ItineraryCreateHeaderFragment extends Fragment{
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_create_header, container, false);
 
-        final EditText etCreateDescription = (EditText) v.findViewById(R.id.etCreateDescription);
-        final EditText etCreateTitle = (EditText) v.findViewById(R.id.etCreateTitle);
+        final TextView etCreateDescription = (TextView) v.findViewById(R.id.etCreateDescription);
+        final TextView etCreateTitle = (TextView) v.findViewById(R.id.etCreateTitle);
 
 //        Itinerary itinerary = (Itinerary) Parcels.unwrap(getArguments().getParcelable("itinerary"));
         String itineraryId = (String) getArguments().getString("itineraryId");

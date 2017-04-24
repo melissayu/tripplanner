@@ -42,6 +42,7 @@ public class ItineraryListFragment extends Fragment {
     public ListView lvItineraries;
 
     public Set<String> bookmarkedItineraryIds;
+    private ParseUser currentUser;
 
     @Override
     public void onResume() {
@@ -118,6 +119,7 @@ public class ItineraryListFragment extends Fragment {
         itineraryList = new ArrayList<>();
         bookmarkedItineraryIds = new HashSet<String>();
 
+        currentUser = ParseUser.getCurrentUser();
 
         itineraryAdapter = new ItineraryArrayAdapter(getActivity(), itineraryList, bookmarkedItineraryIds);
         getBookmarkedItineraries();
@@ -153,10 +155,12 @@ public class ItineraryListFragment extends Fragment {
                 if (e == null) {
                     itineraryList.clear();
                     itineraryList.addAll(itineraries);
+
+                    reorderItineraries();
                     /* creating some mock data if DB is empty*/
-                    if (itineraryList.size() == 0) {
+//                    if (itineraryList.size() == 0) {
 //                        itineraryList.addAll(createMockDataItineraries());
-                    }
+//                    }
                     updateItineraryBookmarks(bookmarkedItineraryIds);
                     itineraryAdapter.notifyDataSetChanged();
                 } else {
@@ -166,6 +170,12 @@ public class ItineraryListFragment extends Fragment {
         });
 
         return (ArrayList<Itinerary>)itineraryList;
+    }
+
+    public ArrayList<Itinerary> reorderItineraries() {
+        ArrayList<Itinerary> orderedItineraries = new ArrayList<>();
+
+        return orderedItineraries;
     }
 
     public ArrayList<Itinerary> getItineraries(String queryString) {

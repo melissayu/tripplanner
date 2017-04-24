@@ -96,6 +96,15 @@ public class Itinerary extends ParseObject {
         return getList("features");
     }
 
+    public void setPricePoint(int pricePoint) {
+        put("pricePoint", pricePoint);
+    }
+
+    public int getPricePoint() {
+        return getInt("pricePoint");
+    }
+
+
 
     // Get the user for this item
     public ParseUser getUser()  {

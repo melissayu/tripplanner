@@ -54,9 +54,10 @@ public class ItineraryArrayAdapter extends ArrayAdapter<Itinerary> {
         tvItineraryTitle.setText(itinerary.getTitle());
 
         TextView tvItineraryItemFeature = (TextView) convertView.findViewById(R.id.tvItineraryItemFeature);
-
         tvItineraryItemFeature.setText(Utils.createFeaturesString(itinerary.getFeatures()));
 
+        TextView tvItineraryItemPricePoint = (TextView) convertView.findViewById(R.id.tvItineraryItemPricePoint);
+        tvItineraryItemPricePoint.setText(Utils.convertPricePoint(itinerary.getPricePoint()));
 
         ImageView ivItineraryItemPhoto = (ImageView) convertView.findViewById(R.id.ivItineraryItemPhoto);
         if (itinerary.getImageBitmap() != null) {

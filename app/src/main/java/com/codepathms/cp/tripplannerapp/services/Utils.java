@@ -63,4 +63,11 @@ public class Utils {
         }
         return featuresString;
     }
+
+    public static String convertPricePoint(Integer pricePoint) {
+        if (pricePoint == 1) { return "$"; }
+        else if (pricePoint == 2) { return "$$"; }
+        else if (pricePoint == 3) {return "$$$"; }
+        else return "";
+    }
 }
