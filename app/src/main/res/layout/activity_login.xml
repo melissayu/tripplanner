@@ -5,76 +5,86 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_centerHorizontal="false"
-    android:background="@drawable/login_bg"
+    android:background="@drawable/login_bg_blue"
     android:orientation="vertical"
     tools:context="com.codepathms.cp.tripplannerapp.activities.LoginActivity">
 
-    <TextView
-        android:id="@+id/tvAppName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="120dp"
+    <ImageView
+        android:id="@+id/ivAppLogo"
+        android:layout_width="146dp"
+        android:layout_height="153dp"
+        android:layout_marginTop="36dp"
         android:fontFamily="sans-serif-smallcaps"
-        android:text="Day Tripper"
-        android:textAlignment="center"
-        android:textColor="@android:color/white"
-        android:textSize="40sp"
-        android:textStyle="bold" />
+        app:srcCompat="@drawable/logo_white"
+        android:layout_alignParentTop="true"
+        android:layout_centerHorizontal="true" />
 
     <EditText
         android:id="@+id/etLoginUsername"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/etLoginPassword"
+        android:layout_width="278dp"
+        android:layout_height="46dp"
+        android:layout_below="@id/ivAppLogo"
         android:layout_centerHorizontal="true"
-        android:ems="10"
+        android:layout_marginTop="50dp"
+        android:background="@color/text_bg"
         android:hint="Username"
         android:inputType="textPersonName"
-        android:textAlignment="center" />
+        android:padding="15dp"
+        android:textSize="16sp" />
 
     <EditText
         android:id="@+id/etLoginPassword"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="278dp"
+        android:layout_height="46dp"
+        android:layout_below="@id/etLoginUsername"
         android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:ems="10"
+        android:layout_marginTop="10dp"
+        android:background="@color/text_bg"
         android:hint="Password"
         android:inputType="textPassword"
-        android:textAlignment="center" />
+        android:padding="15dp"
+        android:textSize="16dp" />
 
     <EditText
         android:id="@+id/etLoginEmail"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="278dp"
+        android:layout_height="46dp"
         android:layout_below="@id/etLoginPassword"
         android:layout_centerHorizontal="true"
-        android:ems="10"
+        android:layout_marginTop="10dp"
+        android:background="@color/text_bg"
         android:hint="Email Address"
-        android:inputType="textPersonName"
-        android:textAlignment="center" />
+        android:inputType="textEmailAddress"
+        android:padding="10dp"
+        android:textSize="16sp" />
 
     <Button
         android:id="@+id/btnLogin"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="278dp"
+        android:layout_height="46dp"
         android:layout_below="@id/etLoginPassword"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/button_shape_grey"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorAccentOrange"
         android:minHeight="20dp"
         android:padding="5dp"
-        android:text="Log In" />
+        android:text="Log In"
+        android:textColor="@android:color/white"
+        android:textColorLink="@color/colorPrimary" />
 
     <Button
         android:id="@+id/btnSignup"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="278dp"
+        android:layout_height="46dp"
         android:layout_below="@+id/etLoginEmail"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/button_shape_grey"
+        android:layout_marginTop="10dp"
+        android:background="@color/colorAccentOrange"
         android:minHeight="20dp"
         android:padding="5dp"
-        android:text="Sign Up" />
+        android:text="Sign Up"
+        android:textColor="@android:color/white"
+        android:textColorLink="@color/colorPrimary" />
 
     <TextView
         android:id="@+id/tvSignUp"
@@ -82,8 +92,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/btnLogin"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
         android:text="@string/sign_up"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:textSize="18sp" />
 
     <TextView
@@ -92,8 +103,9 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/btnSignup"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
         android:text="@string/log_in"
-        android:textColor="@android:color/white"
+        android:textColor="@android:color/black"
         android:textSize="18sp" />
 
 </RelativeLayout>

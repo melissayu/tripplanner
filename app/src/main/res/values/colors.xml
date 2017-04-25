@@ -1,11 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#4db6ac</color>
-    <color name="colorPrimaryDark">#303F9F</color>
-    <color name="colorAccent">#f881a8</color>
+    <color name="colorPrimary">#28d77d</color>
+    <color name="colorPrimaryDark">#00766c</color>
+    <color name="colorPrimaryLight">#64d8cb</color>
+
+    <color name="colorAccentOrange">#ffb628</color>
+
+
+    <color name="colorAccent">#ffeb3b</color>
+    <color name="colorAccentLight">#ffff72</color>
+
+    <color name="text_bg">#c8ffffff</color>
+
     <color name="gradient_start">#4db6ac</color>
     <color name="gradient_end">#d2e8ae</color>
+
     <color name="green">#dbefd1</color>
     <color name="yellow">#efefd1</color>
     <color name="red">#d6c2c0</color>
+
 </resources>

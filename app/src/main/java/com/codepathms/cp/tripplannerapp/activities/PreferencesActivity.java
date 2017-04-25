@@ -94,258 +94,342 @@ public class PreferencesActivity extends AppCompatActivity {
         });
     }
 
+    public void setStyle(Boolean isSelected, Button btn) {
+        if (isSelected) {
+            setSelectedStyle(btn);
+        } else {
+            setUnselectedStyle(btn);
+        }
+    }
+
+    public void setSelectedStyle(Button btn) {
+        btn.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+        btn.setTextColor(getResources().getColor(android.R.color.white));
+    }
+
+    public void setUnselectedStyle(Button btn) {
+        btn.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+        btn.setTextColor(getResources().getColor(android.R.color.black));
+    }
+
     public void setupPrefButtons() {
         btnOutdoor = (Button) findViewById(R.id.btnOutdoor);
-        if (btnOutdoorClicked) {
-            btnOutdoor.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-        }
+        setStyle(btnOutdoorClicked, btnOutdoor);
+//        if (btnOutdoorClicked) {
+//            setSelectedStyle(btnOutdoor);
+////            btnOutdoor.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+////            btnOutdoor.setTextColor(getResources().getColor(android.R.color.white));
+//        }
         btnOutdoor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnOutdoorClicked = !btnOutdoorClicked;
-                if (btnOutdoorClicked) {
-                    btnOutdoor.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-                } else {
-                    btnOutdoor.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
-                }
+                setStyle(btnOutdoorClicked, btnOutdoor);
+//                if (btnOutdoorClicked) {
+//                    setSelectedStyle(btnOutdoor);
+////                    btnOutdoor.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+////                    btnOutdoor.setTextColor(getResources().getColor(android.R.color.white));
+//                } else {
+//                    setUnselectedStyle(btnOutdoor);
+////                    btnOutdoor.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+//                }
 
             }
         });
 
         btnFood = (Button) findViewById(R.id.btnFood);
-        if (btnFoodClicked) {
-            btnFood.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-        }
+        setStyle(btnFoodClicked, btnFood);
+
+//        if (btnFoodClicked) {
+//            setSelectedStyle(btnFood);
+////            btnFood.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//        }
         btnFood.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnFoodClicked = !btnFoodClicked;
-                if (btnFoodClicked) {
-                    btnFood.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-                } else {
-                    btnFood.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
-                }
+                setStyle(btnFoodClicked, btnFood);
+
+//                if (btnFoodClicked) {
+//                    setSelectedStyle(btnFood);
+////                    btnFood.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//                } else {
+//                    setUnselectedStyle(btnFood);
+////                    btnFood.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+//                }
 
             }
         });
 
         btnTours = (Button) findViewById(R.id.btnTours);
-        if (btnToursClicked) {
-            btnTours.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-        }
+        setStyle(btnToursClicked, btnTours);
+
+//        if (btnToursClicked) {
+//            btnTours.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//        }
         btnTours.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnToursClicked = !btnToursClicked;
-                if (btnToursClicked) {
-                    btnTours.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-                } else {
-                    btnTours.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
-                }
+                setStyle(btnToursClicked, btnTours);
+
+//                if (btnToursClicked) {
+//                    btnTours.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//                } else {
+//                    btnTours.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+//                }
 
             }
         });
 
         btnDrinks = (Button) findViewById(R.id.btnDrinks);
-        if (btnDrinksClicked) {
-            btnDrinks.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-        }
+        setStyle(btnDrinksClicked, btnDrinks);
+
+//        if (btnDrinksClicked) {
+//            btnDrinks.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//        }
         btnDrinks.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnDrinksClicked = !btnDrinksClicked;
-                if (btnDrinksClicked) {
-                    btnDrinks.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-                } else {
-                    btnDrinks.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
-                }
+                setStyle(btnDrinksClicked, btnDrinks);
+
+//                if (btnDrinksClicked) {
+//                    btnDrinks.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//                } else {
+//                    btnDrinks.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+//                }
 
             }
         });
 
         btnSports = (Button) findViewById(R.id.btnSports);
-        if (btnSportsClicked) {
-            btnSports.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-        }
+        setStyle(btnSportsClicked, btnSports);
+
+//        if (btnSportsClicked) {
+//            btnSports.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//        }
         btnSports.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnSportsClicked = !btnSportsClicked;
-                if (btnSportsClicked) {
-                    btnSports.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-                } else {
-                    btnSports.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
-                }
+                setStyle(btnSportsClicked, btnSports);
+
+//                if (btnSportsClicked) {
+//                    btnSports.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//                } else {
+//                    btnSports.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+//                }
 
             }
         });
 
         btnArts = (Button) findViewById(R.id.btnArts);
-        if (btnArtsClicked) {
-            btnArts.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-        }
+        setStyle(btnArtsClicked, btnArts);
+
+//        if (btnArtsClicked) {
+//            btnArts.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//        }
         btnArts.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnArtsClicked = !btnArtsClicked;
-                if (btnArtsClicked) {
-                    btnArts.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-                } else {
-                    btnArts.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
-                }
+                setStyle(btnArtsClicked, btnArts);
+
+//                if (btnArtsClicked) {
+//                    btnArts.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//                } else {
+//                    btnArts.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+//                }
 
             }
         });
 
         btnClubs = (Button) findViewById(R.id.btnClubs);
-        if (btnClubsClicked) {
-            btnClubs.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-        }
+        setStyle(btnClubsClicked, btnClubs);
+
+//        if (btnClubsClicked) {
+//            btnClubs.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//        }
         btnClubs.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnClubsClicked = !btnClubsClicked;
-                if (btnClubsClicked) {
-                    btnClubs.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-                } else {
-                    btnClubs.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
-                }
+                setStyle(btnClubsClicked, btnClubs);
+
+//                if (btnClubsClicked) {
+//                    btnClubs.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//                } else {
+//                    btnClubs.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+//                }
 
             }
         });
 
         btnShops = (Button) findViewById(R.id.btnShops);
-        if (btnShopsClicked) {
-            btnShops.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-        }
+        setStyle(btnShopsClicked, btnShops);
+
+//        if (btnShopsClicked) {
+//            btnShops.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//        }
         btnShops.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnShopsClicked = !btnShopsClicked;
-                if (btnShopsClicked) {
-                    btnShops.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-                } else {
-                    btnShops.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
-                }
+                setStyle(btnShopsClicked, btnShops);
+
+//                if (btnShopsClicked) {
+//                    btnShops.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//                } else {
+//                    btnShops.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+//                }
 
             }
         });
 
         btnHike = (Button) findViewById(R.id.btnHike);
-        if (btnHikeClicked) {
-            btnHike.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-        }
+        setStyle(btnHikeClicked, btnHike);
+
+//        if (btnHikeClicked) {
+//            btnHike.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//        }
         btnHike.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnHikeClicked = !btnHikeClicked;
-                if (btnHikeClicked) {
-                    btnHike.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-                } else {
-                    btnHike.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
-                }
+                setStyle(btnHikeClicked, btnHike);
+
+//                if (btnHikeClicked) {
+//                    btnHike.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//                } else {
+//                    btnHike.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+//                }
 
             }
         });
 
         btnMusic = (Button) findViewById(R.id.btnMusic);
-        if (btnMusicClicked) {
-            btnMusic.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-        }
+        setStyle(btnMusicClicked, btnMusic);
+
+//        if (btnMusicClicked) {
+//            btnMusic.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//        }
         btnMusic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnMusicClicked = !btnMusicClicked;
-                if (btnMusicClicked) {
-                    btnMusic.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-                } else {
-                    btnMusic.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
-                }
+                setStyle(btnMusicClicked, btnMusic);
+
+//                if (btnMusicClicked) {
+//                    btnMusic.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//                } else {
+//                    btnMusic.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+//                }
 
             }
         });
 
         btnMovies = (Button) findViewById(R.id.btnMovies);
-        if (btnMoviesClicked) {
-            btnMovies.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-        }
+        setStyle(btnMoviesClicked, btnMovies);
+
+//        if (btnMoviesClicked) {
+//            btnMovies.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//        }
         btnMovies.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnMoviesClicked = !btnMoviesClicked;
-                if (btnMoviesClicked) {
-                    btnMovies.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-                } else {
-                    btnMovies.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
-                }
+                setStyle(btnMoviesClicked, btnMovies);
+
+//                if (btnMoviesClicked) {
+//                    btnMovies.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//                } else {
+//                    btnMovies.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+//                }
 
             }
         });
 
         btnMuseum = (Button) findViewById(R.id.btnMuseum);
-        if (btnMuseumClicked) {
-            btnMuseum.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-        }
+        setStyle(btnMuseumClicked, btnMuseum);
+
+//        if (btnMuseumClicked) {
+//            btnMuseum.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//        }
         btnMuseum.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnMuseumClicked = !btnMuseumClicked;
-                if (btnMuseumClicked) {
-                    btnMuseum.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-                } else {
-                    btnMuseum.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
-                }
+                setStyle(btnMuseumClicked, btnMuseum);
+
+//                if (btnMuseumClicked) {
+//                    btnMuseum.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//                } else {
+//                    btnMuseum.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+//                }
 
             }
         });
 
         btnDollarOne = (Button) findViewById(R.id.btnDollarOne);
-        if (btnDollarOneClicked) {
-            btnDollarOne.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-        }
+        setStyle(btnDollarOneClicked, btnDollarOne);
+
+//        if (btnDollarOneClicked) {
+//            btnDollarOne.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//        }
         btnDollarOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnDollarOneClicked = !btnDollarOneClicked;
-                if (btnDollarOneClicked) {
-                    btnDollarOne.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-                } else {
-                    btnDollarOne.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
-                }
+                setStyle(btnDollarOneClicked, btnDollarOne);
+
+//                if (btnDollarOneClicked) {
+//                    btnDollarOne.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//                } else {
+//                    btnDollarOne.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+//                }
 
             }
         });
 
         btnDollarTwo = (Button) findViewById(R.id.btnDollarTwo);
-        if (btnDollarTwoClicked) {
-            btnDollarTwo.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-        }
+        setStyle(btnDollarTwoClicked, btnDollarTwo);
+
+//        if (btnDollarTwoClicked) {
+//            btnDollarTwo.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//        }
         btnDollarTwo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnDollarTwoClicked = !btnDollarTwoClicked;
-                if (btnDollarTwoClicked) {
-                    btnDollarTwo.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-                } else {
-                    btnDollarTwo.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
-                }
+                setStyle(btnDollarTwoClicked, btnDollarTwo);
+
+//                if (btnDollarTwoClicked) {
+//                    btnDollarTwo.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//                } else {
+//                    btnDollarTwo.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+//                }
 
             }
         });
 
         btnDollarThree = (Button) findViewById(R.id.btnDollarThree);
-        if (btnDollarThreeClicked) {
-            btnDollarThree.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-        }
+        setStyle(btnDollarThreeClicked, btnDollarThree);
+
+//        if (btnDollarThreeClicked) {
+//            btnDollarThree.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//        }
         btnDollarThree.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 btnDollarThreeClicked = !btnDollarThreeClicked;
-                if (btnDollarThreeClicked) {
-                    btnDollarThree.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
-                } else {
-                    btnDollarThree.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
-                }
+                setStyle(btnDollarThreeClicked, btnDollarThree);
+
+//                if (btnDollarThreeClicked) {
+//                    btnDollarThree.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+//                } else {
+//                    btnDollarThree.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+//                }
 
             }
         });
@@ -354,66 +438,84 @@ public class PreferencesActivity extends AppCompatActivity {
         btnDrive = (Button) findViewById(R.id.btnDrive);
         btnPublic = (Button) findViewById(R.id.btnPublic);
         if (btnWalkClicked) {
-            btnWalk.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+            setSelectedStyle(btnWalk);
+//            btnWalk.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
             btnDriveClicked = false;
-            btnDrive.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+            setUnselectedStyle(btnDrive);
+//            btnDrive.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
             btnPublicClicked = false;
-            btnPublic.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+            setUnselectedStyle(btnPublic);
+//            btnPublic.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
         }
         btnWalk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!btnWalkClicked) {
                     btnWalkClicked = true;
-                    btnWalk.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+                    setSelectedStyle(btnWalk);
+//                    btnWalk.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
                     btnDriveClicked = false;
-                    btnDrive.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                    setUnselectedStyle(btnDrive);
+                    //btnDrive.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
                     btnPublicClicked = false;
-                    btnPublic.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                    setUnselectedStyle(btnPublic);
+//                    btnPublic.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
                 }
 
             }
         });
 
         if (btnDriveClicked) {
-            btnDrive.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+            setSelectedStyle(btnDrive);
+            //btnDrive.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
             btnWalkClicked = false;
-            btnWalk.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+            setUnselectedStyle(btnWalk);
+//            btnWalk.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
             btnPublicClicked = false;
-            btnPublic.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+            setUnselectedStyle(btnPublic);
+//            btnPublic.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
         }
         btnDrive.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!btnDriveClicked) {
                     btnDriveClicked = true;
-                    btnDrive.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+                    setSelectedStyle(btnDrive);
+                    //btnDrive.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
                     btnWalkClicked = false;
-                    btnWalk.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                    setUnselectedStyle(btnWalk);
+                    //btnWalk.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
                     btnPublicClicked = false;
-                    btnPublic.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                    setUnselectedStyle(btnPublic);
+//                    btnPublic.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
                 }
 
             }
         });
 
         if (btnPublicClicked) {
-            btnPublic.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+            setSelectedStyle(btnPublic);
+            //btnPublic.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
             btnWalkClicked = false;
-            btnWalk.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+            setUnselectedStyle(btnWalk);
+            //btnWalk.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
             btnDriveClicked = false;
-            btnDrive.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+            setUnselectedStyle(btnDrive);
+            //btnDrive.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
         }
         btnPublic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (!btnPublicClicked) {
                     btnPublicClicked = true;
-                    btnPublic.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
+                    setSelectedStyle(btnPublic);
+                    //btnPublic.setBackground(getResources().getDrawable(R.drawable.button_shape_selected));
                     btnWalkClicked = false;
-                    btnWalk.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                    setUnselectedStyle(btnWalk);
+                    //btnWalk.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
                     btnDriveClicked = false;
-                    btnDrive.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
+                    setUnselectedStyle(btnDrive);
+                    //btnDrive.setBackground(getResources().getDrawable(R.drawable.button_shape_grey));
                 }
 
             }

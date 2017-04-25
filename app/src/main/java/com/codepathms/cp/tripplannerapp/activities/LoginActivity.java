@@ -7,12 +7,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.codepathms.cp.tripplannerapp.R;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
+
+import java.util.ArrayList;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -30,6 +33,8 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        getSupportActionBar().hide();
 
         //Initially set as login mode
         isLoginMode = true;
@@ -115,6 +120,7 @@ public class LoginActivity extends AppCompatActivity {
                     Intent i = new Intent(getApplicationContext(), PreferencesActivity.class);
                     startActivity(i);
                 } else {
+                    Toast.makeText(getApplicationContext(), "Error: "+e.getMessage(), Toast.LENGTH_LONG).show();
                     // Signup failed. Look at the ParseException to see what happened.
                 }
             }
@@ -132,9 +138,9 @@ public class LoginActivity extends AppCompatActivity {
         user.setEmail(email);
 
         // Set custom properties
-        user.put("featurePrefs", "");
+        user.put("featurePrefs", new ArrayList<String>());
         user.put("transitPrefs", "");
-        user.put("pricePrefs", "");
+        user.put("pricePrefs", new ArrayList<String>());
         user.put("location", "");
 
         // Invoke signUpInBackground
@@ -147,6 +153,7 @@ public class LoginActivity extends AppCompatActivity {
 
                     // Hooray! Let them use the app now.
                 } else {
+                    Toast.makeText(getApplicationContext(), "Error: "+e.getMessage(), Toast.LENGTH_LONG).show();
                     // Sign up didn't succeed. Look at the ParseException
                     // to figure out what went wrong
                 }

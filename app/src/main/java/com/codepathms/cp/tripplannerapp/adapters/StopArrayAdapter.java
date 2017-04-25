@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +17,18 @@ import com.bumptech.glide.Glide;
 import com.codepathms.cp.tripplannerapp.R;
 import com.codepathms.cp.tripplannerapp.models.Stop;
 import com.codepathms.cp.tripplannerapp.services.Utils;
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.TextHttpResponseHandler;
 import com.parse.ParseUser;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.List;
+
+import cz.msebera.android.httpclient.Header;
 
 /**
  * Created by melissa on 4/4/17.
@@ -29,13 +39,20 @@ public class StopArrayAdapter extends ArrayAdapter<Stop> {
     ImageView ivStopItemPhoto;
     ParseUser currentUser;
     int currentPosition;
-//    GoogleApiClient mGoogleApiClient;
+    Stop prevStop;
+    String transitMode;
+    String distString;
+    TextView tvNav;
+
+    //    GoogleApiClient mGoogleApiClient;
 
     public StopArrayAdapter(Context context, List<Stop> stops) {
         super(context, android.R.layout.simple_list_item_1, stops);
         this.context = context;
 
         currentUser = ParseUser.getCurrentUser();
+        transitMode = currentUser.getString("transitPrefs");
+
 //        mGoogleApiClient = new GoogleApiClient
 //                .Builder( getContext() )
 //                .addApi( Places.GEO_DATA_API )
@@ -50,10 +67,18 @@ public class StopArrayAdapter extends ArrayAdapter<Stop> {
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
         currentPosition = position;
         final Stop stop =  getItem(position);
+        prevStop = null;
+        distString = "Navigate to next stop";
+
 
         if (convertView == null) {
             convertView = LayoutInflater.from(getContext()).inflate(R.layout.item_stop, parent, false);
         }
+
+        if (currentPosition > 0) {
+            prevStop =  getItem(currentPosition-1);
+        }
+
 
         TextView tvStopTitle = (TextView) convertView.findViewById(R.id.tvStopTitle);
         tvStopTitle.setText(stop.getTitle());
@@ -62,7 +87,12 @@ public class StopArrayAdapter extends ArrayAdapter<Stop> {
         TextView tvStopFeatures = (TextView) convertView.findViewById(R.id.tvStopFeatures);
         tvStopFeatures.setText(Utils.createFeaturesString(stop.getPlaceTypes()));
 
-        TextView tvNav = (TextView) convertView.findViewById(R.id.tvNavTitle);
+        tvNav = (TextView) convertView.findViewById(R.id.tvNavTitle);
+        if (prevStop != null) {
+            setDurationText(prevStop.getAddress(), stop.getAddress());
+        } else {
+            tvNav.setText(distString);
+        }
         tvNav.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -99,6 +129,58 @@ public class StopArrayAdapter extends ArrayAdapter<Stop> {
         return convertView;
     }
 
+    public void setDurationText(String sourceAddr, String destAddr) {
+        if (sourceAddr == null) {
+            tvNav.setText("Navigate to next stop");
+        }
+        else {
+            String mode;
+            if (transitMode == null) {
+                transitMode = "Drive";
+                mode = "driving";
+            } else if (transitMode.equals("Walk")) {
+                mode = "walking";
+            } else if (transitMode.equals("Transit")) {
+                mode = "transit";
+            } else {
+                mode = "driving";
+            }
+            distString = "";
+
+            AsyncHttpClient client = new AsyncHttpClient();
+            RequestParams params = new RequestParams();
+            params.put("origins", sourceAddr);
+            params.put("destinations", destAddr);
+            params.put("mode", mode);
+            client.get("http://maps.googleapis.com/maps/api/distancematrix/json", params, new TextHttpResponseHandler() {
+                        @Override
+                        public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                            Log.d("distance failure", responseString);
+
+                        }
+
+                        @Override
+                        public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                            Log.d("distance success", responseString);
+                            try {
+                                JSONObject response = new JSONObject(responseString);
+                                JSONArray rows = response.getJSONArray("rows");
+                                JSONObject row = rows.getJSONObject(0);
+                                JSONArray elements = row.getJSONArray("elements");
+                                JSONObject element = elements.getJSONObject(0);
+                                String duration = element.getJSONObject("duration").getString("text");
+                                distString = "" + transitMode + " approx " + duration;
+                                tvNav.setText(distString);
+
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+            );
+        }
+    }
+
 
     public void openNav(String addr){
         String transitMode = ""; //Driving dir by default
@@ -120,8 +202,12 @@ public class StopArrayAdapter extends ArrayAdapter<Stop> {
 //        String uri = "http://maps.google.com/maps?f=d&hl=en&saddr="+latitude1+","+longitude1+"&daddr="+latitude2+","+longitude2;
         String uri = "http://maps.google.com/maps?f=d&hl=en&daddr="+addr;
 
-        if (currentPosition > 0) {
-            Stop prevStop =  getItem(currentPosition-1);
+//        if (currentPosition > 0) {
+//            Stop prevStop =  getItem(currentPosition-1);
+//            String prevAddress = prevStop.getAddress();
+//            uri += "&saddr="+prevAddress;
+//        }
+        if (prevStop != null) {
             String prevAddress = prevStop.getAddress();
             uri += "&saddr="+prevAddress;
         }

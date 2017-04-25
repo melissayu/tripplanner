@@ -1,43 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/common_google_signin_btn_text_dark_default"
     android:orientation="vertical"
     android:weightSum="1">
+
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvAddStop"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="10dp">
+
+        <LinearLayout
+            android:id="@+id/lvAddStop"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/cardview_light_background"
+            android:orientation="vertical"
+            android:padding="5dp">
+
+            <TextView
+                android:id="@+id/textView"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="5dp"
+                android:text="Add a Stop"
+                android:textAlignment="center"
+                android:textSize="14sp" />
+
+            <fragment
+                android:id="@+id/place_autocomplete_fragment"
+                android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                tools:layout="@layout/place_autocomplete_fragment" />
+
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
 
     <ListView
         android:id="@+id/lvCreateStops"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0.93" />
-
-    <LinearLayout
-        android:id="@+id/lvAddStop"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="#e0f2f1"
-        android:orientation="vertical"
-        android:padding="5dp">
-
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Add a Stop"
-            android:textAlignment="center"
-            android:textSize="18sp"
-            android:textStyle="bold" />
-
-        <fragment
-            android:id="@+id/place_autocomplete_fragment"
-            android:name="com.google.android.gms.location.places.ui.SupportPlaceAutocompleteFragment"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:layout="@layout/place_autocomplete_fragment" />
-
-    </LinearLayout>
+        android:layout_below="@+id/cvAddStop"
+        android:layout_weight="0.93"
+        android:divider="@null"
+        android:dividerHeight="0dp" />
 
 
-</LinearLayout>
+</RelativeLayout>

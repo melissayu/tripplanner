@@ -1,31 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/rlCreateHeader"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/gradient"
-    android:orientation="vertical"
+    android:background="@android:color/white"
     android:padding="10dp">
-
-    <TextView
-        android:id="@+id/textView3"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:padding="10dp"
-        android:text="Add stops"
-        android:textAlignment="center"
-        android:textSize="18sp"
-        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/etCreateTitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/textView3"
-        android:ems="10"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="15dp"
         android:hint="Title"
         android:inputType="textPersonName"
         android:textSize="18sp"
@@ -40,14 +28,16 @@
         android:inputType="textPersonName"
         android:text="" />
 
-    <Button
+
+
+    <ImageView
         android:id="@+id/btnCreateDone"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
-        android:text="Done" />
+        app:srcCompat="@drawable/ic_check_circle" />
 
 
 </RelativeLayout>

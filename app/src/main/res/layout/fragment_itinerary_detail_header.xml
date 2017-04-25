@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@drawable/gradient"
+    android:background="@android:color/white"
     android:orientation="vertical"
     android:padding="10dp">
 
@@ -21,6 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="5dp"
         android:text="ItineraryTitle"
+        android:textColor="#4a4a4a"
         android:textSize="18sp"
         android:textStyle="bold" />
 
@@ -31,7 +32,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/tvItineraryDetailTitle"
-        android:text="ItineraryDescription" />
+        android:text="ItineraryDescription"
+        android:textColor="#4a4a4a" />
 
     <TextView
         android:id="@+id/tvItineraryDetailFeatures"
@@ -42,7 +44,8 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/tvItineraryDetailDescription"
-        android:text="Features:" />
+        android:text="Features:"
+        android:textColor="#4a4a4a" />
 
     <ImageView
         android:id="@+id/ivItineraryDetailBookmark"

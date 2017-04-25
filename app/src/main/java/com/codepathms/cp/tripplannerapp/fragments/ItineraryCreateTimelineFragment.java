@@ -8,6 +8,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ListView;
 
 import com.codepathms.cp.tripplannerapp.R;
@@ -53,6 +54,7 @@ public class ItineraryCreateTimelineFragment extends Fragment{
     Itinerary itinerary;
     int sequence;
     GoogleApiClient mGoogleApiClient;
+    EditText etSearchInput;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -124,6 +126,10 @@ public class ItineraryCreateTimelineFragment extends Fragment{
         final SupportPlaceAutocompleteFragment autocompleteFragment = (SupportPlaceAutocompleteFragment)
                 getChildFragmentManager().findFragmentById(R.id.place_autocomplete_fragment);
 
+        etSearchInput = ((EditText)autocompleteFragment.getView().findViewById(R.id.place_autocomplete_search_input));
+        etSearchInput.setTextSize(14.0f);
+        etSearchInput.setPadding(5,5,5,5);
+
         autocompleteFragment.setOnPlaceSelectedListener(new PlaceSelectionListener() {
             @Override
             public void onPlaceSelected(Place place) {
@@ -132,6 +138,7 @@ public class ItineraryCreateTimelineFragment extends Fragment{
                 Stop newStop = createNewStop(place);
                 stopsList.add(newStop);
                 stopsAdapter.notifyDataSetChanged();
+                etSearchInput.clearComposingText();
 
             }
 
