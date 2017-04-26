@@ -138,7 +138,7 @@ public class ItineraryCreateTimelineFragment extends Fragment{
                 Stop newStop = createNewStop(place);
                 stopsList.add(newStop);
                 stopsAdapter.notifyDataSetChanged();
-                etSearchInput.clearComposingText();
+                lvCreatedStops.setSelection(stopsAdapter.getCount() - 1);
 
             }
 

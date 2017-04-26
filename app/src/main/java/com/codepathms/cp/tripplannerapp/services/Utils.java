@@ -66,6 +66,9 @@ public class Utils {
     }
 
     public static String createFeaturesString(List<String> featuresList) {
+        if (featuresList == null) {
+            return "";
+        }
         String featuresString = "Features: ";
         if (featuresList != null) {
             for (int i = 0; i < featuresList.size(); i++) {

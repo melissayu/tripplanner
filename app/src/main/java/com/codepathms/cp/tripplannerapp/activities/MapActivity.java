@@ -164,7 +164,7 @@ public class MapActivity extends AppCompatActivity {
             builder.include(marker.getPosition());
         }
         LatLngBounds bounds = builder.build();
-        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 200);
+        CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 250);
         map.animateCamera(cu);
 
     }

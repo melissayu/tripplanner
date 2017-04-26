@@ -118,7 +118,7 @@ public class ItineraryDetailHeaderFragment extends Fragment {
                     curItinerary = itinerary;
                     tvItineraryDetailTitle.setText(itinerary.getTitle());
                     tvItineraryDetailDescription.setText(itinerary.getDescription());
-                    tvItineraryDetailFeatures.setText(Utils.createFeaturesString(curItinerary.getFeatures()));
+                    tvItineraryDetailFeatures.setText(Utils.createFeaturesString(itinerary.getFeatures()));
 
                     if (curItinerary.getParseUser("owner").getObjectId().equals(curUser.getObjectId())) {
                         ivItineraryDetailDelete.setVisibility(View.VISIBLE);

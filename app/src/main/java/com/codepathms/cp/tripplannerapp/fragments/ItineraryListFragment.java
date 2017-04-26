@@ -161,6 +161,7 @@ public class ItineraryListFragment extends Fragment {
 
     public ArrayList<Itinerary> getItineraries() {
         ParseQuery<Itinerary> query = ParseQuery.getQuery("Itinerary");
+        query.orderByDescending("createdAt");
         query.findInBackground(new FindCallback<Itinerary>() {
             public void done(List<Itinerary> itineraries, ParseException e) {
                 if (e == null) {
@@ -231,6 +232,8 @@ public class ItineraryListFragment extends Fragment {
         list.add(query2);
 
         ParseQuery<ParseObject> query = ParseQuery.or(list);
+        query.orderByDescending("createdAt");
+
         query.findInBackground(new FindCallback<ParseObject>() {
             public void done(List<ParseObject> itineraries, ParseException e) {
                 if (e == null) {

@@ -68,7 +68,7 @@ public class StopArrayAdapter extends ArrayAdapter<Stop> {
         currentPosition = position;
         final Stop stop =  getItem(position);
         prevStop = null;
-        distString = "Navigate to next stop";
+        distString = "Navigate to stop";
 
 
         if (convertView == null) {
@@ -131,7 +131,7 @@ public class StopArrayAdapter extends ArrayAdapter<Stop> {
 
     public void setDurationText(String sourceAddr, String destAddr) {
         if (sourceAddr == null) {
-            tvNav.setText("Navigate to next stop");
+            tvNav.setText("Navigate to stop");
         }
         else {
             String mode;
@@ -143,6 +143,7 @@ public class StopArrayAdapter extends ArrayAdapter<Stop> {
             } else if (transitMode.equals("Transit")) {
                 mode = "transit";
             } else {
+                transitMode = "Drive";
                 mode = "driving";
             }
             distString = "";
@@ -211,7 +212,6 @@ public class StopArrayAdapter extends ArrayAdapter<Stop> {
             String prevAddress = prevStop.getAddress();
             uri += "&saddr="+prevAddress;
         }
-
 
         if (!transitMode.equals("")) {
             uri += "&dirflg="+transitMode;

@@ -87,13 +87,13 @@ public class ItineraryDetailTimelineFragment extends Fragment {
         return v;
     }
 
-
     public ArrayList<Stop> getStops() {
 
         String itineraryId = (String) getArguments().getString("itineraryId");
 
         ParseQuery<Stop> query = ParseQuery.getQuery("Stop");
         query.whereEqualTo("itineraryId", itineraryId);
+        query.orderByAscending("sequence");
         query.findInBackground(new FindCallback<Stop>() {
             public void done(List<Stop> stops, ParseException e) {
                 if (e == null) {
@@ -103,7 +103,7 @@ public class ItineraryDetailTimelineFragment extends Fragment {
 //                        stopList.addAll(createMockDataStops());
                     }
                     getStopsPhotos();
-                    stopsAdapter.notifyDataSetChanged();
+//                    stopsAdapter.notifyDataSetChanged();
 
                 } else {
                     Log.d("score", "Error: " + e.getMessage());

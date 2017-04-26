@@ -3,7 +3,9 @@ package com.codepathms.cp.tripplannerapp.activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -41,7 +43,28 @@ public class LoginActivity extends AppCompatActivity {
 
         etLoginUsername = (EditText) findViewById(R.id.etLoginUsername);
         etLoginPassword = (EditText) findViewById(R.id.etLoginPassword);
+        etLoginPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (isLoginMode && actionId == EditorInfo.IME_ACTION_GO) {
+                    loginUser(etLoginUsername.getText().toString(),
+                            etLoginPassword.getText().toString());
+                }
+                return true;
+            }
+        });
         etLoginEmail = (EditText) findViewById(R.id.etLoginEmail);
+        etLoginEmail.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_GO) {
+                    signupUser(etLoginUsername.getText().toString(),
+                            etLoginPassword.getText().toString(),
+                            etLoginEmail.getText().toString());
+                }
+                return true;
+            }
+        });
         tvSignUp = (TextView) findViewById(R.id.tvSignUp);
         tvLogin = (TextView) findViewById(R.id.tvLogin);
 

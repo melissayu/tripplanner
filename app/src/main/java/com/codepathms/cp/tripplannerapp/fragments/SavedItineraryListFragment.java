@@ -29,6 +29,8 @@ public class SavedItineraryListFragment extends ItineraryListFragment {
         ParseUser curUser = ParseUser.getCurrentUser();
         ParseRelation<Itinerary> relation = curUser.getRelation("bookmarkedItineraries");
         ParseQuery<Itinerary> relquery = relation.getQuery();
+        relquery.orderByDescending("createdAt");
+
         relquery.findInBackground(new FindCallback<Itinerary>() {
             public void done(List<Itinerary> results, ParseException e) {
                 if (e != null) {
@@ -36,7 +38,7 @@ public class SavedItineraryListFragment extends ItineraryListFragment {
                 } else {
                     itineraryList.clear();
                     // results have all the Posts the current user liked.
-                    itineraryList.addAll(results);
+                    itineraryList.addAll(reorderItineraries(results));
                     updateItineraryBookmarks(bookmarkedItineraryIds);
                     itineraryAdapter.notifyDataSetChanged();
 

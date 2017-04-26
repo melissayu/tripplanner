@@ -22,12 +22,13 @@ public class CreatedItineraryListFragment extends ItineraryListFragment {
 
         ParseQuery<Itinerary> query = ParseQuery.getQuery("Itinerary");
         query.whereEqualTo("owner", curUser);
+        query.orderByDescending("createdAt");
         query.findInBackground(new FindCallback<Itinerary>() {
             public void done(List<Itinerary> itineraries, ParseException e) {
                 if (e == null) {
                     itineraryList.clear();
 //                    Toast.makeText(getContext(), "#"+itineraries.size(), Toast.LENGTH_SHORT).show();
-                    itineraryList.addAll(itineraries);
+                    itineraryList.addAll(reorderItineraries(itineraries));
                     updateItineraryBookmarks(bookmarkedItineraryIds);
                     itineraryAdapter.notifyDataSetChanged();
 
